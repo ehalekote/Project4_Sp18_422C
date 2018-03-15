@@ -179,6 +179,6 @@ public abstract class Critter {
 	}
 	
 	public static void displayWorld() {
-		// Complete this method.
+		CritterWorld.displayWorld();
 	}
 }
