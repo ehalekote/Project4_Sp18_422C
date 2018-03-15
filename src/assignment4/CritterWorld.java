@@ -2,20 +2,21 @@ package assignment4;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 public class CritterWorld {
 	
-	static ArrayList<ArrayList<ArrayList<Critter>>> worldModel = new ArrayList<ArrayList<ArrayList<Critter>>>();		//Represents the game board, indexed as X, Y, list of critters in the spot
+	static ArrayList<ArrayList<LinkedList<Critter>>> worldModel = new ArrayList<ArrayList<LinkedList<Critter>>>();		//Represents the game board, indexed as X, Y, list of critters in the spot
 	
 	/**
 	 * Generates an empty world
 	 */
 	CritterWorld(){
 		for(int x=0; x<Params.world_width; x++) {
-			worldModel.add(new ArrayList<ArrayList<Critter>>());
+			worldModel.add(new ArrayList<LinkedList<Critter>>(Params.world_height));
 			for(int y=0; y<Params.world_height; y++) {
-				worldModel.get(x).add(null);
+				worldModel.get(x).add(new LinkedList());
 			}
 		}
 	}
@@ -32,7 +33,7 @@ public class CritterWorld {
 		for(int y=0;y<Params.world_height;y++) {
 			System.out.print("|");
 			for(int x=0;x<Params.world_width;x++) {
-				if(worldModel.get(x) != null && worldModel.get(x).get(y) != null && worldModel.get(x).get(y).size() == 1) {
+				if(!worldModel.get(x).get(y).isEmpty() && worldModel.get(x).get(y).size() == 1) {
 					System.out.print(worldModel.get(x).get(y).get(0).toString());
 				}
 				else {System.out.print(" ");}
@@ -48,13 +49,4 @@ public class CritterWorld {
 		System.out.println("+"); 
 	}
 	
-	/**
-	 * Updates the position of a Critter on the worldModel
-	 * @param crit Critter whose position is to be updated
-	 * @param x_coord new x position
-	 * @param y_coord new y position
-	 */
-	public void updateCritterPosition(Critter crit, int x_coord, int y_coord){
-		
-	}
 }

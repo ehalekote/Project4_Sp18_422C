@@ -22,6 +22,16 @@ import java.util.List;
 
 
 public abstract class Critter {
+	//TESTING FUNCTIONS************************************************************************************************
+	
+	public static void addCritterTest(Critter c){
+		c.x_coord = 0;
+		c.y_coord = 0;
+		Critter.population.add(c);
+		CritterWorld.worldModel.get(c.x_coord).get(c.y_coord).add(c);
+	}
+	//****************************************************************************************************************
+	
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
@@ -50,10 +60,102 @@ public abstract class Critter {
 	private int x_coord;
 	private int y_coord;
 	
+	/**
+	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
+	 * @return
+	 */
+	private boolean exists() {
+		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Moves a critter from one position to one step in the given direction on the World
+	 * @param direction Direction to move critter one step
+	 */
+	private void oneStep(int direction) {
+		//Remove Critter from it's current position
+		CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).remove(this);
+		
+		//Update x and y coords
+		if(direction == 0) { //walk right
+			this.x_coord = (this.x_coord + 1) % Params.world_width;
+		}
+		else if(direction == 1) { //walk diagonally up-right
+			this.x_coord = (this.x_coord + 1) % Params.world_width;
+			if(this.y_coord - 1 < 0) {
+				this.y_coord = Params.world_height -1;
+			}else {
+				this.y_coord = this.y_coord - 1;
+			}
+		}
+		else if(direction == 2) { //walk up
+			if(this.y_coord - 1 < 0) {
+				this.y_coord = Params.world_height -1;
+			}else {
+				this.y_coord = this.y_coord - 1;
+			}
+			
+		}
+		else if(direction == 3) { // walk diagonally up-left
+			if(this.x_coord - 1 < 0) {
+				this.x_coord = Params.world_width -1;
+			}else {
+				this.x_coord = this.x_coord - 1;
+			}
+			
+			if(this.y_coord - 1 < 0) {
+				this.y_coord = Params.world_height - 1;
+			}else {
+				this.y_coord = this.y_coord - 1;
+			}
+			
+		}
+		else if(direction == 4) { //walk left
+			if(this.x_coord - 1 < 0) {
+				this.x_coord = Params.world_width -1;
+			}else {
+				this.x_coord = this.x_coord - 1;
+			}
+			
+		}
+		else if(direction == 5) { //walk left down
+			if(this.x_coord - 1 < 0) {
+				this.x_coord = Params.world_width -1;
+			}else {
+				this.x_coord = this.x_coord - 1;
+			}
+			
+			this.y_coord = (this.y_coord + 1) % Params.world_height;
+			
+		}
+		else if(direction == 6) { //walk down
+			this.y_coord = (this.y_coord + 1) % Params.world_height;
+			
+		}
+		else {  //walk right down, direction == 7 
+			this.x_coord = (this.x_coord + 1) % Params.world_width;
+			this.y_coord = (this.y_coord + 1) % Params.world_height;
+		}
+			
+		//Add Critter to position of updated x and y coordinates
+		CritterWorld.worldModel.get(this.x_coord).get(y_coord).add(this);
+	}
+	
+	/**
+	 * Critter takes one step
+	 * @param direction Direction to move critter
+	 */
 	protected final void walk(int direction) {
-		//remove representation on game board
-		//updateCritterPosition() with new x,y position
-		//place element in x,y position on game board
+		if(exists()) {
+			this.energy = this.energy - Params.walk_energy_cost;
+			oneStep(direction);
+		}
+		else {
+			System.out.println("This Critter doesn't exist in the world/population and so it cannot move");
+		}
 	}
 	
 	protected final void run(int direction) {
