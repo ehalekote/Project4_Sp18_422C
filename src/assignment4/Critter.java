@@ -52,7 +52,7 @@ public abstract class Critter {
 	
 	protected final void walk(int direction) {
 		//remove representation on game board
-		//update x,y position
+		//updateCritterPosition() with new x,y position
 		//place element in x,y position on game board
 	}
 	
