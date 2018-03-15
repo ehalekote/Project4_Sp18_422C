@@ -51,6 +51,9 @@ public abstract class Critter {
 	private int y_coord;
 	
 	protected final void walk(int direction) {
+		//remove representation on game board
+		//update x,y position
+		//place element in x,y position on game board
 	}
 	
 	protected final void run(int direction) {
