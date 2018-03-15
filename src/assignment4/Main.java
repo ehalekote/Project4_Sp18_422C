@@ -70,7 +70,6 @@ public class Main {
         /* Write your code below. */
         
         // System.out.println("GLHF");
-        //Testing
         
         /* Write your code above */
         System.out.flush();

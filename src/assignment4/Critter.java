@@ -14,6 +14,7 @@ package assignment4;
 
 
 import java.util.List;
+import java.util.Random;
 
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
@@ -187,7 +188,32 @@ public abstract class Critter {
 	 * @param critter_class_name
 	 * @throws InvalidCritterException
 	 */
-	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+	public static void makeCritter(String critter_class_name) throws InvalidCritterException {	
+		try {
+			//Generate new critter from string critter_class_name
+			critter_class_name = "assignment4." +  critter_class_name;
+			Class c = Class.forName(critter_class_name);
+			Critter crit = (Critter)c.newInstance();
+			
+			//Set critter energy
+			crit.energy = Params.start_energy;
+			
+			//Generate random critter position
+			Random rand = new Random();
+			crit.x_coord = rand.nextInt(Params.world_width);
+			crit.y_coord = rand.nextInt(Params.world_height);
+			
+			//Place critter into population and worldModel
+			population.add(crit);
+			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).add(crit);
+			
+		} catch(Exception e) {
+			System.out.println("YOU MESSED UP");
+			System.out.println(e);
+			
+		}
+		
+
 	}
 	
 	/**
