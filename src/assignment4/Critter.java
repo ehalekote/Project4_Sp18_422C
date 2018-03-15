@@ -22,16 +22,14 @@ import java.util.List;
 
 
 public abstract class Critter {
-	//TESTING FUNCTIONS************************************************************************************************
-	
-	public static void addCritterTest(Critter c){
+	//Test
+	public static void addCritterTest(Critter c) {
 		c.x_coord = 0;
 		c.y_coord = 0;
 		Critter.population.add(c);
 		CritterWorld.worldModel.get(c.x_coord).get(c.y_coord).add(c);
 	}
-	//****************************************************************************************************************
-	
+	//
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
@@ -154,12 +152,23 @@ public abstract class Critter {
 			oneStep(direction);
 		}
 		else {
-			System.out.println("This Critter doesn't exist in the world/population and so it cannot move");
+			System.out.println("This Critter doesn't exist in the world/population and so it cannot walk");
 		}
 	}
 	
+	/**
+	 * Makes a critter take two steps in the specified direction
+	 * @param direction Direction to run in
+	 */
 	protected final void run(int direction) {
-		
+		if(exists()) {
+			this.energy = this.energy - Params.run_energy_cost;
+			oneStep(direction);
+			oneStep(direction);
+		}
+		else {
+			System.out.println("This Critter doesn't exist in the world/population and so it cannot run");
+		}
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {

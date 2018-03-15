@@ -20,7 +20,9 @@ public class CritterWorld {
 			}
 		}
 	}
-	
+	/**
+	 * Prints the world to the console
+	 */
 	static void displayWorld() {
 		//Upper Boarder
 		System.out.print("+"); 
