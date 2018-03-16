@@ -23,14 +23,6 @@ import java.util.Random;
 
 
 public abstract class Critter {
-	//Testing function******************************************************************************************
-	public static void addCritterTest(Critter c) {
-		c.x_coord = 0;
-		c.y_coord = 0;
-		Critter.population.add(c);
-		CritterWorld.worldModel.get(c.x_coord).get(c.y_coord).add(c);
-	}
-	//***********************************************************************************************************
 	
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
