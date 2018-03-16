@@ -14,6 +14,7 @@ package assignment4;
 
 
 import java.util.List;
+import java.util.Random;
 
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
@@ -22,14 +23,7 @@ import java.util.List;
 
 
 public abstract class Critter {
-	//Test
-	public static void addCritterTest(Critter c) {
-		c.x_coord = 0;
-		c.y_coord = 0;
-		Critter.population.add(c);
-		CritterWorld.worldModel.get(c.x_coord).get(c.y_coord).add(c);
-	}
-	//
+	
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
@@ -62,7 +56,7 @@ public abstract class Critter {
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
 	 * @return
 	 */
-	private boolean exists() {
+	protected boolean exists() {
 		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
 			return true;
 		}
@@ -76,70 +70,75 @@ public abstract class Critter {
 	private void oneStep(int direction) {
 		//Remove Critter from it's current position
 		CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).remove(this);
+			
+		//Update this.x_coord and this.y_coord
+		updateCoordsFromStep(direction);
 		
-		//Update x and y coords
-		if(direction == 0) { //walk right
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-		}
-		else if(direction == 1) { //walk diagonally up-right
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height -1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-		}
-		else if(direction == 2) { //walk up
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height -1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-			
-		}
-		else if(direction == 3) { // walk diagonally up-left
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height - 1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-			
-		}
-		else if(direction == 4) { //walk left
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-		}
-		else if(direction == 5) { //walk left down
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-			
-		}
-		else if(direction == 6) { //walk down
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-			
-		}
-		else {  //walk right down, direction == 7 
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-		}
-			
 		//Add Critter to position of updated x and y coordinates
 		CritterWorld.worldModel.get(this.x_coord).get(y_coord).add(this);
+	}
+	
+	private void updateCoordsFromStep(int direction) {
+		//Update x and y coords
+				if(direction == 0) { //walk right
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+				}
+				else if(direction == 1) { //walk diagonally up-right
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height -1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+				}
+				else if(direction == 2) { //walk up
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height -1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+					
+				}
+				else if(direction == 3) { // walk diagonally up-left
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height - 1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+					
+				}
+				else if(direction == 4) { //walk left
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+				}
+				else if(direction == 5) { //walk left down
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+					
+				}
+				else if(direction == 6) { //walk down
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+					
+				}
+				else {  //walk right down, direction == 7 
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+				}
 	}
 	
 	/**
@@ -172,6 +171,20 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(this.energy >= Params.min_reproduce_energy) {
+			//Subtract energy cost of offspring
+			offspring.energy = this.energy/2;
+			if(this.energy % 2 == 0) {this.energy /= 2;}
+			else {this.energy = (this.energy/2) + 1;}
+			
+			//Set offspring coordinates
+			offspring.x_coord = this.x_coord;
+			offspring.y_coord = this.y_coord;
+			offspring.updateCoordsFromStep(direction);
+			
+			babies.add(offspring);
+			//At this point offSpring is on babies ArrayList but not yet on the WorldModel
+		}
 	}
 
 	public abstract void doTimeStep();
@@ -187,7 +200,31 @@ public abstract class Critter {
 	 * @param critter_class_name
 	 * @throws InvalidCritterException
 	 */
-	public static void makeCritter(String critter_class_name) throws InvalidCritterException {
+	public static void makeCritter(String critter_class_name) throws InvalidCritterException {	
+		try {
+			//Generate new critter from string critter_class_name
+			critter_class_name = "assignment4." +  critter_class_name;
+			Class c = Class.forName(critter_class_name);
+			Critter crit = (Critter)c.newInstance();
+			
+			//Set critter energy
+			crit.energy = Params.start_energy;
+			
+			//Generate random critter position
+			crit.x_coord = Critter.getRandomInt(Params.world_width);
+			crit.y_coord = Critter.getRandomInt(Params.world_height);
+			
+			//Place critter into population and worldModel
+			population.add(crit);
+			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).add(crit);
+			
+		} catch(Exception e) {
+			System.out.println("YOU MESSED UP");
+			System.out.println(e);
+			
+		}
+		
+
 	}
 	
 	/**
@@ -239,14 +276,42 @@ public abstract class Critter {
 	static abstract class TestCritter extends Critter {
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
+			if(super.energy <= 0) {
+				if(exists()) {
+					population.remove(this);
+					CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				}
+				else {
+					System.out.println("A TestCritter that was killed via setEnergy does not exist in the board");
+				}
+				
+			}
 		}
 		
 		protected void setX_coord(int new_x_coord) {
-			super.x_coord = new_x_coord;
+			if(this.exists()) {
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				super.x_coord = new_x_coord;
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
+			}
+			else {
+				System.out.println("setX_coord in TestCritter - exists() == false - TestCritter location in model not updated but x_coord was");
+				super.x_coord = new_x_coord;
+			}
+			
+			
 		}
 		
 		protected void setY_coord(int new_y_coord) {
-			super.y_coord = new_y_coord;
+			if(this.exists()) {
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				super.y_coord = new_y_coord;
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
+			}
+			else {
+				System.out.println("setY_coord in TestCritter - exists() == false - TestCritter location in model not updated but y_coord was");
+				super.y_coord = new_y_coord;
+			}
 		}
 		
 		protected int getX_coord() {

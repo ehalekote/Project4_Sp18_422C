@@ -69,9 +69,18 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        // System.out.println("GLHF");
-        //Testing
+        //While (Command is not EXIT):
+	        
+	        //WorldTimeStep - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+	        Critter.worldTimeStep();
+	        //Resolve Encounters
+	        
+	        //Add babies to worldModel and population arrayList
+	        
+	        //Cull dead critters
         
+        		//Add Algae
+	        
         /* Write your code above */
         System.out.flush();
 
