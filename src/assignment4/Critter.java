@@ -347,7 +347,28 @@ public abstract class Critter {
 	 * Clear the world of all critters, dead and alive
 	 */
 	public static void clearWorld() {
-		// Complete this method.
+		for(Critter crit: population) {
+			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).remove(crit);
+		}
+		population.clear();
+	}
+	
+	private void cullDeadCritters() {
+		List<Critter> dead = new java.util.ArrayList<Critter>(); 
+		 
+		//Find dead Critters
+		for(Critter crit: population) {
+			if(crit.energy <= 0) {
+				dead.add(crit);
+			}
+		}
+		
+		//Remove from population
+		population.removeAll(dead);
+		//Remove from worldModel
+		for(Critter deadCrit: dead) {
+			CritterWorld.worldModel.get(deadCrit.x_coord).get(deadCrit.y_coord).remove(deadCrit);
+		}
 	}
 	
 	public static void worldTimeStep() {
