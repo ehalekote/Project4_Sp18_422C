@@ -2,4 +2,4 @@
 
 Eshan Halekote and Ben Guo
 
-Critters
+This is our crittes project
