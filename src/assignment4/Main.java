@@ -70,16 +70,18 @@ public class Main {
         /* Write your code below. */
         
         //While (Command is not EXIT):
-	        
-	        //WorldTimeStep - Everyone moves, Critters can reproduce at this point and add offspring to babies array
-	        Critter.worldTimeStep();
-	        //Resolve Encounters
-	        
-	        //Add babies to worldModel and population arrayList
-	        
-	        //Cull dead critters
-        
-        		//Add Algae
+	        do {
+	        		//Get and execute user input commands
+	        		//for each step:
+		        		//WorldTimeStep - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+			        Critter.worldTimeStep();
+			        //Resolve Encounters
+			        //Add babies to worldModel and population arrayList
+			        //Cull dead critters
+		        		//Add Algae
+	        }
+	        while(false); //Should be while user input != "quit"
+	       
 	        
         /* Write your code above */
         System.out.flush();
