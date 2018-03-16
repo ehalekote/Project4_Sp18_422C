@@ -72,7 +72,7 @@ public class Main {
         //While (Command is not EXIT):
 	        
 	        //WorldTimeStep - Everyone moves, Critters can reproduce at this point and add offspring to babies array
-	        
+	        Critter.worldTimeStep();
 	        //Resolve Encounters
 	        
 	        //Add babies to worldModel and population arrayList
