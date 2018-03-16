@@ -23,14 +23,15 @@ import java.util.Random;
 
 
 public abstract class Critter {
-	//Test
+	//Testing function******************************************************************************************
 	public static void addCritterTest(Critter c) {
 		c.x_coord = 0;
 		c.y_coord = 0;
 		Critter.population.add(c);
 		CritterWorld.worldModel.get(c.x_coord).get(c.y_coord).add(c);
 	}
-	//
+	//***********************************************************************************************************
+	
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
@@ -63,7 +64,7 @@ public abstract class Critter {
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
 	 * @return
 	 */
-	private boolean exists() {
+	protected boolean exists() {
 		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
 			return true;
 		}
@@ -286,11 +287,27 @@ public abstract class Critter {
 		}
 		
 		protected void setX_coord(int new_x_coord) {
-			super.x_coord = new_x_coord;
+			if(this.exists()) {
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				super.x_coord = new_x_coord;
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
+			}
+			else {
+				System.out.println("setX_coord in TestCritter - exists() == false - TestCritter location in model not updated");
+			}
+			
+			
 		}
 		
 		protected void setY_coord(int new_y_coord) {
-			super.y_coord = new_y_coord;
+			if(this.exists()) {
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				super.y_coord = new_y_coord;
+				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
+			}
+			else {
+				System.out.println("setY_coord in TestCritter - exists() == false - TestCritter location in model not updated");
+			}
 		}
 		
 		protected int getX_coord() {
