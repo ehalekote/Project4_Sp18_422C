@@ -77,70 +77,75 @@ public abstract class Critter {
 	private void oneStep(int direction) {
 		//Remove Critter from it's current position
 		CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).remove(this);
+			
+		//Update this.x_coord and this.y_coord
+		updateCoordsFromStep(direction);
 		
-		//Update x and y coords
-		if(direction == 0) { //walk right
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-		}
-		else if(direction == 1) { //walk diagonally up-right
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height -1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-		}
-		else if(direction == 2) { //walk up
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height -1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-			
-		}
-		else if(direction == 3) { // walk diagonally up-left
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-			if(this.y_coord - 1 < 0) {
-				this.y_coord = Params.world_height - 1;
-			}else {
-				this.y_coord = this.y_coord - 1;
-			}
-			
-		}
-		else if(direction == 4) { //walk left
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-		}
-		else if(direction == 5) { //walk left down
-			if(this.x_coord - 1 < 0) {
-				this.x_coord = Params.world_width -1;
-			}else {
-				this.x_coord = this.x_coord - 1;
-			}
-			
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-			
-		}
-		else if(direction == 6) { //walk down
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-			
-		}
-		else {  //walk right down, direction == 7 
-			this.x_coord = (this.x_coord + 1) % Params.world_width;
-			this.y_coord = (this.y_coord + 1) % Params.world_height;
-		}
-			
 		//Add Critter to position of updated x and y coordinates
 		CritterWorld.worldModel.get(this.x_coord).get(y_coord).add(this);
+	}
+	
+	private void updateCoordsFromStep(int direction) {
+		//Update x and y coords
+				if(direction == 0) { //walk right
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+				}
+				else if(direction == 1) { //walk diagonally up-right
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height -1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+				}
+				else if(direction == 2) { //walk up
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height -1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+					
+				}
+				else if(direction == 3) { // walk diagonally up-left
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+					if(this.y_coord - 1 < 0) {
+						this.y_coord = Params.world_height - 1;
+					}else {
+						this.y_coord = this.y_coord - 1;
+					}
+					
+				}
+				else if(direction == 4) { //walk left
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+				}
+				else if(direction == 5) { //walk left down
+					if(this.x_coord - 1 < 0) {
+						this.x_coord = Params.world_width -1;
+					}else {
+						this.x_coord = this.x_coord - 1;
+					}
+					
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+					
+				}
+				else if(direction == 6) { //walk down
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+					
+				}
+				else {  //walk right down, direction == 7 
+					this.x_coord = (this.x_coord + 1) % Params.world_width;
+					this.y_coord = (this.y_coord + 1) % Params.world_height;
+				}
 	}
 	
 	/**
@@ -173,6 +178,20 @@ public abstract class Critter {
 	}
 	
 	protected final void reproduce(Critter offspring, int direction) {
+		if(this.energy >= Params.min_reproduce_energy) {
+			//Subtract energy cost of offspring
+			offspring.energy = this.energy/2;
+			if(this.energy % 2 == 0) {this.energy /= 2;}
+			else {this.energy = (this.energy/2) + 1;}
+			
+			//Set offspring coordinates
+			offspring.x_coord = this.x_coord;
+			offspring.y_coord = this.y_coord;
+			offspring.updateCoordsFromStep(direction);
+			
+			babies.add(offspring);
+			//At this point offSpring is on babies ArrayList but not yet on the WorldModel
+		}
 	}
 
 	public abstract void doTimeStep();
@@ -199,9 +218,8 @@ public abstract class Critter {
 			crit.energy = Params.start_energy;
 			
 			//Generate random critter position
-			Random rand = new Random();
-			crit.x_coord = rand.nextInt(Params.world_width);
-			crit.y_coord = rand.nextInt(Params.world_height);
+			crit.x_coord = Critter.getRandomInt(Params.world_width);
+			crit.y_coord = Critter.getRandomInt(Params.world_height);
 			
 			//Place critter into population and worldModel
 			population.add(crit);
