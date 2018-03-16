@@ -276,6 +276,16 @@ public abstract class Critter {
 	static abstract class TestCritter extends Critter {
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
+			if(super.energy <= 0) {
+				if(exists()) {
+					population.remove(this);
+					CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
+				}
+				else {
+					System.out.println("A TestCritter that was killed via setEnergy does not exist in the board");
+				}
+				
+			}
 		}
 		
 		protected void setX_coord(int new_x_coord) {
@@ -285,7 +295,8 @@ public abstract class Critter {
 				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
 			}
 			else {
-				System.out.println("setX_coord in TestCritter - exists() == false - TestCritter location in model not updated");
+				System.out.println("setX_coord in TestCritter - exists() == false - TestCritter location in model not updated but x_coord was");
+				super.x_coord = new_x_coord;
 			}
 			
 			
@@ -298,7 +309,8 @@ public abstract class Critter {
 				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).add(this);
 			}
 			else {
-				System.out.println("setY_coord in TestCritter - exists() == false - TestCritter location in model not updated");
+				System.out.println("setY_coord in TestCritter - exists() == false - TestCritter location in model not updated but y_coord was");
+				super.y_coord = new_y_coord;
 			}
 		}
 		
