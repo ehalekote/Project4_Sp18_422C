@@ -1,6 +1,9 @@
 package assignment4;
 
 import java.util.List;
+
+import assignment4.Critter.TestCritter;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -23,7 +26,7 @@ public class CritterWorld {
 	/**
 	 * Prints the world to the console
 	 */
-	static void displayWorld() {
+	public static void displayWorld() {
 		//Upper Boarder
 		System.out.print("+"); 
 		for(int upper=0;upper<Params.world_width;upper++) {
@@ -49,6 +52,34 @@ public class CritterWorld {
 			System.out.print("-");
 		}
 		System.out.println("+"); 
+	}
+	
+	/**
+	 * Removes all "dead" critters (critters with energy <= 0) from population and worldModel
+	 */
+	public static void cullDeadCritters() {
+		List<Critter> population = TestCritter.getPopulation();
+		List<Critter> dead = new java.util.ArrayList<Critter>(); 
+		 
+		//Find dead Critters
+		for(Critter crit: population) {
+			if(crit.getEnergy() <= 0) {
+				dead.add(crit);
+			}
+		}
+		
+		//Remove from population
+		population.removeAll(dead);
+		//Remove from worldModel
+		for(Critter deadCrit: dead) { 
+			for(int y=0;y<Params.world_height;y++) {
+				for(int x=0;x<Params.world_width;x++) {
+					if(worldModel.get(x).get(y).contains(deadCrit)) {
+						worldModel.get(x).get(y).remove(deadCrit);
+					}
+				}
+			}
+		}
 	}
 	
 }
