@@ -11,6 +11,7 @@ package assignment4;
  * Spring 2018
  */
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 
@@ -73,12 +74,17 @@ public class Main {
 	        do {
 	        		//Get and execute user input commands
 	        		//for each step:
-		        		//WorldTimeStep - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+		        		//WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
 			        Critter.worldTimeStep();
-			        //Resolve Encounters
-			        //Add babies to worldModel and population arrayList
-			        //Cull dead critters
-		        		//Add Algae
+			        
+			        //RESOLVE ENCOUNTERS
+			        
+			        //ADD BABIES TO WORLDMODEL AND POPULATION
+			        
+			        //CULL DEAD CRITTERS
+			        CritterWorld.cullDeadCritters();
+			        
+		        		//ADD ALGAE
 	        }
 	        while(false); //Should be while user input != "quit"
 	       

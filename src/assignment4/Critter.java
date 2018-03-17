@@ -78,6 +78,10 @@ public abstract class Critter {
 		CritterWorld.worldModel.get(this.x_coord).get(y_coord).add(this);
 	}
 	
+	/**
+	 * Updates a Critter's x_coord & y_coord given a direction to take a single step
+	 * @param direction Direction to step
+	 */
 	private void updateCoordsFromStep(int direction) {
 		//Update x and y coords
 				if(direction == 0) { //walk right
@@ -170,6 +174,11 @@ public abstract class Critter {
 		}
 	}
 	
+	/**
+	 * Generates a new offspring for a Critter if it has at least min_reproduce_energy 
+	 * @param offspring New offspring to be created
+	 * @param direction Direction to spawn new offspring
+	 */
 	protected final void reproduce(Critter offspring, int direction) {
 		if(this.energy >= Params.min_reproduce_energy) {
 			//Subtract energy cost of offspring
@@ -274,6 +283,10 @@ public abstract class Critter {
 	 * so that they correctly update your grid/data structure.
 	 */
 	static abstract class TestCritter extends Critter {
+		/**
+		 * sets the energy value of a TestCritter
+		 * @param new_energy_value Value to set TestCritter energy to
+		 */
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
 			if(super.energy <= 0) {
@@ -288,6 +301,10 @@ public abstract class Critter {
 			}
 		}
 		
+		/**
+		 * Sets x_coord of a TestCritter
+		 * @param new_x_coord Value to set
+		 */
 		protected void setX_coord(int new_x_coord) {
 			if(this.exists()) {
 				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
@@ -302,6 +319,10 @@ public abstract class Critter {
 			
 		}
 		
+		/**
+		 * Sets y_coord of a TestCritter
+		 * @param new_y_coord Value to set
+		 */
 		protected void setY_coord(int new_y_coord) {
 			if(this.exists()) {
 				CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).remove(this);
@@ -353,28 +374,14 @@ public abstract class Critter {
 		population.clear();
 	}
 	
-	private void cullDeadCritters() {
-		List<Critter> dead = new java.util.ArrayList<Critter>(); 
-		 
-		//Find dead Critters
-		for(Critter crit: population) {
-			if(crit.energy <= 0) {
-				dead.add(crit);
-			}
-		}
-		
-		//Remove from population
-		population.removeAll(dead);
-		//Remove from worldModel
-		for(Critter deadCrit: dead) {
-			CritterWorld.worldModel.get(deadCrit.x_coord).get(deadCrit.y_coord).remove(deadCrit);
-		}
-	}
 	
 	public static void worldTimeStep() {
 		// Complete this method.
 	}
 	
+	/**
+	 * Displays worldModel via the console
+	 */
 	public static void displayWorld() {
 		CritterWorld.displayWorld();
 	}
