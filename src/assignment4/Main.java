@@ -2,6 +2,7 @@ package assignment4;
 
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
+<<<<<<< HEAD
  * Replace <...> with your actual data.
  * Benjamin Guo
  * bzg74
@@ -10,9 +11,19 @@ package assignment4;
  * <Student2 EID>
  * 15460
  * Slip days used: <>
+=======
+ * Eshan Halekote
+ * eh23427
+ * 15460
+ * Ben Guo
+ * <Student2 EID>
+ * 15460
+ * Slip days used: <0>
+>>>>>>> dabca120efe69242dedb7261627f445439f73f7a
  * Spring 2018
  */
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 
@@ -86,16 +97,33 @@ public class Main {
         			exit = true;
         			break;
         		case "show":
-        			//Critter.displayWorld();
         			System.out.println("Displays world.");
+        			Critter.displayWorld();
         			break;
         		case "step":
-        			//doTimeStep for every critter
+        			Critter.worldTimeStep(); ////WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
         	}
         }
         
-        
+        //While (Command is not EXIT):
+	        //do {
+	        		//Get and execute user input commands
+	        		//for each step:
+		        		//WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+			        //Critter.worldTimeStep();
+			        
+			        //RESOLVE ENCOUNTERS
+			        
+			        //ADD BABIES TO WORLDMODEL AND POPULATION
+			        
+			        //CULL DEAD CRITTERS
+			        //CritterWorld.cullDeadCritters();
+			        
+		        		//ADD ALGAE
+	        //}
+	        //while(false); //Should be while user input != "quit"
         /* Write your code above */
+        
         System.out.flush();
 
     }
