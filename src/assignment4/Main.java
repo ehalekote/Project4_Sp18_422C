@@ -2,31 +2,19 @@ package assignment4;
 
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
-<<<<<<< HEAD
- * Replace <...> with your actual data.
- * Benjamin Guo
- * bzg74
- * 15460
- * <Student2 Name>
- * <Student2 EID>
- * 15460
- * Slip days used: <>
-=======
  * Eshan Halekote
  * eh23427
  * 15460
- * Ben Guo
- * <Student2 EID>
+ * Benjamin Guo
+ * bzg74
  * 15460
- * Slip days used: <0>
->>>>>>> dabca120efe69242dedb7261627f445439f73f7a
+ * Slip days used: <0
  * Spring 2018
  */
 
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
-
 
 /*
  * Usage: java <pkgname>.Main <input file> test
@@ -82,6 +70,7 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
+        System.out.println("Test");
         boolean exit = false; // quit command will set to true
         while(!exit) {
         	System.out.println("critters> ");
@@ -97,11 +86,13 @@ public class Main {
         			exit = true;
         			break;
         		case "show":
-        			System.out.println("Displays world.");
-        			Critter.displayWorld();
+        			System.out.println("Display of world:");
+        			CritterWorld.displayWorld();
         			break;
         		case "step":
+        			System.out.println("World has been advanced by 1 time step.");
         			Critter.worldTimeStep(); ////WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+        			break;
         	}
         }
         
