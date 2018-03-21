@@ -1,17 +1,17 @@
 package assignment4;
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
+ * Eshan Halekote
+ * eh23427
+ * 15460
+ * Ben Guo
  * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * 15460
  * Slip days used: <0>
- * Fall 2016
+ * Spring 2018
  */
 
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 
@@ -70,8 +70,25 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        // System.out.println("GLHF");
-        
+        //While (Command is not EXIT):
+	        do {
+	        		//Get and execute user input commands
+	        		//for each step:
+		        		//WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+			        Critter.worldTimeStep();
+			        
+			        //RESOLVE ENCOUNTERS
+			        
+			        //ADD BABIES TO WORLDMODEL AND POPULATION
+			        
+			        //CULL DEAD CRITTERS
+			        CritterWorld.cullDeadCritters();
+			        
+		        		//ADD ALGAE
+	        }
+	        while(false); //Should be while user input != "quit"
+	       
+	        
         /* Write your code above */
         System.out.flush();
 
