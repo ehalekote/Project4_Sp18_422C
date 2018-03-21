@@ -1,6 +1,17 @@
 package assignment4;
+
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
+<<<<<<< HEAD
+ * Replace <...> with your actual data.
+ * Benjamin Guo
+ * bzg74
+ * 15460
+ * <Student2 Name>
+ * <Student2 EID>
+ * 15460
+ * Slip days used: <>
+=======
  * Eshan Halekote
  * eh23427
  * 15460
@@ -8,6 +19,7 @@ package assignment4;
  * <Student2 EID>
  * 15460
  * Slip days used: <0>
+>>>>>>> dabca120efe69242dedb7261627f445439f73f7a
  * Spring 2018
  */
 
@@ -50,7 +62,7 @@ public class Main {
                 System.out.println("USAGE: java Main OR java Main <input file> <test output>");
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.out.println("USAGE: java Main OR java Main <input file>  <test output>");
+                System.out.println("USAGE: java Main OR java Main <input file> <test output>");
             }
             if (args.length >= 2) {
                 if (args[1].equals("test")) { // if the word "test" is the second argument to java
@@ -70,26 +82,48 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
+        boolean exit = false; // quit command will set to true
+        while(!exit) {
+        	System.out.println("critters> ");
+        	String wholeCommand = kb.nextLine();
+        	String[] splitCommands = wholeCommand.split(" ");
+        	switch(splitCommands[0]) {
+        		case "quit":
+        			if (splitCommands.length > 1) {
+        				System.out.println("invalid command: " + wholeCommand);
+        				break;
+        			}
+        			System.out.println("quit");
+        			exit = true;
+        			break;
+        		case "show":
+        			System.out.println("Displays world.");
+        			Critter.displayWorld();
+        			break;
+        		case "step":
+        			Critter.worldTimeStep(); ////WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
+        	}
+        }
+        
         //While (Command is not EXIT):
-	        do {
+	        //do {
 	        		//Get and execute user input commands
 	        		//for each step:
 		        		//WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
-			        Critter.worldTimeStep();
+			        //Critter.worldTimeStep();
 			        
 			        //RESOLVE ENCOUNTERS
 			        
 			        //ADD BABIES TO WORLDMODEL AND POPULATION
 			        
 			        //CULL DEAD CRITTERS
-			        CritterWorld.cullDeadCritters();
+			        //CritterWorld.cullDeadCritters();
 			        
 		        		//ADD ALGAE
-	        }
-	        while(false); //Should be while user input != "quit"
-	       
-	        
+	        //}
+	        //while(false); //Should be while user input != "quit"
         /* Write your code above */
+        
         System.out.flush();
 
     }
