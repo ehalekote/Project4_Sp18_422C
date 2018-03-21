@@ -93,6 +93,24 @@ public class Main {
         			System.out.println("World has been advanced by 1 time step.");
         			Critter.worldTimeStep(); ////WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
         			break;
+        		case "seed":
+        			if (splitCommands.length > 2) {
+        				System.out.println("error processing:" + wholeCommand);
+        				break;
+        			}
+        			else if (splitCommands.length > 1) {
+        				try {
+        					long seed = Long.parseLong(splitCommands[1]);
+        					System.out.println("Seed is set at " + splitCommands[1] + ".");
+        					Critter.setSeed(seed);
+        				}
+        				catch (NumberFormatException e) {
+        					System.out.println("error processing: " + wholeCommand);
+        				}
+        			}
+        			else {
+        				System.out.println("error processing:" + wholeCommand);
+        			}
         	}
         }
         
