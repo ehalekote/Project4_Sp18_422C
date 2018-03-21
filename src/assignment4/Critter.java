@@ -177,5 +177,8 @@ public abstract class Critter {
 	
 	public static void displayWorld() {
 		// Complete this method.
+		
+		// test of controller
+		System.out.println("Display world.");
 	}
 }
