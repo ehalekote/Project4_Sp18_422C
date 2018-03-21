@@ -96,7 +96,6 @@ public class Main {
         		case "seed":
         			if (splitCommands.length > 2) {
         				System.out.println("error processing:" + wholeCommand);
-        				break;
         			}
         			else if (splitCommands.length > 1) {
         				try {
@@ -111,6 +110,10 @@ public class Main {
         			else {
         				System.out.println("error processing:" + wholeCommand);
         			}
+        			break;
+        		default:
+        			System.out.println("invalid command: " + wholeCommand);
+        			break;
         	}
         }
         
