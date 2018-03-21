@@ -342,7 +342,6 @@ public abstract class Critter {
 		protected int getY_coord() {
 			return super.y_coord;
 		}
-		
 
 		/*
 		 * This method getPopulation has to be modified by you if you are not using the population
@@ -376,7 +375,9 @@ public abstract class Critter {
 	
 	
 	public static void worldTimeStep() {
-		// Complete this method.
+		for(Critter crit: population) {
+			crit.doTimeStep();
+		}
 	}
 	
 	/**
