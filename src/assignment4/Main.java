@@ -1,15 +1,16 @@
 package assignment4;
+
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * Benjamin Guo
+ * bzg74
+ * 15460
  * <Student2 Name>
  * <Student2 EID>
- * <Student2 5-digit Unique No.>
- * Slip days used: <0>
- * Fall 2016
+ * 15460
+ * Slip days used: <>
+ * Spring 2018
  */
 
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class Main {
                 System.out.println("USAGE: java Main OR java Main <input file> <test output>");
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.out.println("USAGE: java Main OR java Main <input file>  <test output>");
+                System.out.println("USAGE: java Main OR java Main <input file> <test output>");
             }
             if (args.length >= 2) {
                 if (args[1].equals("test")) { // if the word "test" is the second argument to java
@@ -70,7 +71,29 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        // System.out.println("GLHF");
+        boolean exit = false; // quit command will set to true
+        while(!exit) {
+        	System.out.println("critters> ");
+        	String wholeCommand = kb.nextLine();
+        	String[] splitCommands = wholeCommand.split(" ");
+        	switch(splitCommands[0]) {
+        		case "quit":
+        			if (splitCommands.length > 1) {
+        				System.out.println("invalid command: " + wholeCommand);
+        				break;
+        			}
+        			System.out.println("quit");
+        			exit = true;
+        			break;
+        		case "show":
+        			//Critter.displayWorld();
+        			System.out.println("Displays world.");
+        			break;
+        		case "step":
+        			//doTimeStep for every critter
+        	}
+        }
+        
         
         /* Write your code above */
         System.out.flush();
