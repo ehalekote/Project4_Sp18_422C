@@ -58,7 +58,7 @@ public abstract class Critter {
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
 	 * @return
 	 */
-	protected boolean exists() {
+	private boolean exists() {
 		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
 			return true;
 		}
@@ -289,6 +289,14 @@ public abstract class Critter {
 		 * sets the energy value of a TestCritter
 		 * @param new_energy_value Value to set TestCritter energy to
 		 */
+		
+		private boolean exists() {
+			if(CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).contains(this) && population.contains(this)) {
+				return true;
+			}
+			return false;
+		}
+		
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
 			if(super.energy <= 0) {
@@ -373,6 +381,7 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).remove(crit);
 		}
 		population.clear();
+		babies.clear();
 	}
 	
 	
