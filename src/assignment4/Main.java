@@ -70,6 +70,7 @@ public class Main {
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
+        CritterWorld world = new CritterWorld();
         System.out.println("Test");
         boolean exit = false; // quit command will set to true
         while(!exit) {
