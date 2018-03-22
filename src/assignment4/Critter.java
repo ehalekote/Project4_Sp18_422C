@@ -58,7 +58,7 @@ public abstract class Critter {
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
 	 * @return
 	 */
-	private boolean exists() {
+	protected boolean exists() {
 		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
 			return true;
 		}
@@ -242,7 +242,7 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).add(crit);
 			
 		} catch(Exception e) {
-			System.out.println("YOU MESSED UP");
+			System.out.println("error processing: " + "make" );
 			System.out.println(e);
 			
 		}
@@ -268,8 +268,6 @@ public abstract class Critter {
 		catch(Exception e) {
 			System.out.println(e);
 		}
-		return result;
-		
 	}
 	
 	/**
@@ -311,14 +309,6 @@ public abstract class Critter {
 		 * sets the energy value of a TestCritter
 		 * @param new_energy_value Value to set TestCritter energy to
 		 */
-		
-		private boolean exists() {
-			if(CritterWorld.worldModel.get(super.x_coord).get(super.y_coord).contains(this) && population.contains(this)) {
-				return true;
-			}
-			return false;
-		}
-		
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
 			if(super.energy <= 0) {
@@ -403,7 +393,6 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).remove(crit);
 		}
 		population.clear();
-		babies.clear();
 	}
 	
 	
@@ -444,14 +433,43 @@ public abstract class Critter {
 		
 		for (int index = 0; index < encounters.size(); index += 1) {
 			LinkedList<Critter> fighting = encounters.get(index);
-			if (fighting.size() == 2) {
+			
+			//the first critter in the linked list will fight all other critters in the linked list in order
+			while (fighting.size() >= 2) {
 				Critter a = fighting.get(0);
 				Critter b = fighting.get(1);
+				
+				//critters attempt to run away if they choose not to fight
+				boolean ran = false; //represents whether a critter successfully moved when trying to run away
 				boolean aChoice = a.fight(b.toString());
+				if (aChoice == false) {
+					a.doTimeStep();
+					ran = !a.hasMoved;
+				}
 				boolean bChoice = b.fight(a.toString());
+				if (bChoice == false) {
+					b.doTimeStep();
+					ran = !b.hasMoved;
+				}
 				
-				//must add code to consider if critters die trying to run away
+				//critters who die attempting to run away are removed, no fight occurs
+				if(a.energy <= 0) {
+					fighting.remove(a);
+					population.remove(a);
+					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
+					break;
+				}
+				if(b.energy <= 0) {
+					fighting.remove(b);
+					population.remove(b);
+					CritterWorld.worldModel.get(b.x_coord).get(b.y_coord).remove(b);
+					break;
+				}
 				
+				//if critters are alive and still in the same space after they make a choice to fight or not, they fight
+				if (ran = true) {
+					break;
+				}
 				int aRoll = 0;
 				int bRoll = 0;
 				if (aChoice = true) {
@@ -468,6 +486,7 @@ public abstract class Critter {
 					energyWon = (int)(b.energy / 2);
 					a.energy += energyWon;
 					
+					fighting.remove(b);
 					population.remove(b);
 					CritterWorld.worldModel.get(b.x_coord).get(b.y_coord).remove(b);
 				}
@@ -478,6 +497,7 @@ public abstract class Critter {
 					energyWon = (int)(a.energy / 2);
 					b.energy += energyWon;
 					
+					fighting.remove(a);
 					population.remove(a);
 					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
 				}
