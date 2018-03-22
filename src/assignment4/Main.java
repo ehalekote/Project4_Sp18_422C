@@ -15,6 +15,7 @@ package assignment4;
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+import java.lang.reflect.Method;
 
 /*
  * Usage: java <pkgname>.Main <input file> test
@@ -186,16 +187,23 @@ public class Main {
         			}
         			else {
         				try {
+        					//see if specified class is concrete subclass of Critter
         					String critterClass = "assignment4." +  splitCommands[1];
         					Class c = Class.forName(critterClass);
         					Critter crit = (Critter)c.newInstance();
+        					
+        					//get a list of living critters of specified type
         					List<Critter> critterStat = Critter.getInstances(splitCommands[1]);
-        					Critter.runStats(critterStat);
+        					
+        					//use reflection to call class-specific runStats function
+        					Method method = c.getMethod("runStats", List.class);
+        					method.invoke(null, critterStat);
         				}
         				catch (Exception | NoClassDefFoundError e) {
         					System.out.println("error processing: " + wholeCommand);
         				}
         			}
+        			break;
         			
         		default:
         			System.out.println("invalid command: " + wholeCommand);
