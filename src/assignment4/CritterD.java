@@ -1,4 +1,15 @@
 package assignment4;
+/* CRITTERS CritterD.java
+ * EE422C Project 4 submission by
+ * Eshan Halekote
+ * eh23427
+ * 15460
+ * Benjamin Guo
+ * bzg74
+ * 15460
+ * Slip days used: <0
+ * Spring 2018
+ */
 
 /**
  * This Critter has a 1/3 chance of fighting other critters and only moves in an upward zig-zag patter
