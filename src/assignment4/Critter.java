@@ -373,6 +373,7 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).remove(crit);
 		}
 		population.clear();
+		babies.clear();
 	}
 	
 	
