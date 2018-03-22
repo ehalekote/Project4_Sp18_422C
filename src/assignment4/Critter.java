@@ -13,6 +13,8 @@ package assignment4;
  */
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -378,6 +380,8 @@ public abstract class Critter {
 		for(Critter crit: population) {
 			crit.doTimeStep();
 		}
+		CritterWorld.cullDeadCritters();
+		resolveEncounters();
 	}
 	
 	/**
@@ -385,5 +389,62 @@ public abstract class Critter {
 	 */
 	public static void displayWorld() {
 		CritterWorld.displayWorld();
+	}
+	
+	/**
+	 * Resolves encounters between living critters that occupy the same space
+	 */
+	private static void resolveEncounters() {
+		//creates an arraylist of linked lists containing groups of critters occupying the same space
+		ArrayList<LinkedList<Critter>> encounters = new ArrayList<LinkedList<Critter>>();
+		for (int x = 0; x < Params.world_width; x++) {
+			for (int y = 0; y < Params.world_height; y++) {
+				if (!CritterWorld.worldModel.get(x).get(y).isEmpty() && CritterWorld.worldModel.get(x).get(y).size() > 1) {
+						encounters.add(CritterWorld.worldModel.get(x).get(y));
+				}
+			}
+		}
+		
+		for (int index = 0; index < encounters.size(); index += 1) {
+			LinkedList<Critter> fighting = encounters.get(index);
+			if (fighting.size() == 2) {
+				Critter a = fighting.get(0);
+				Critter b = fighting.get(1);
+				boolean aChoice = a.fight(b.toString());
+				boolean bChoice = b.fight(a.toString());
+				
+				//must add code to consider if critters die trying to run away
+				
+				int aRoll = 0;
+				int bRoll = 0;
+				if (aChoice = true) {
+					aRoll = Critter.getRandomInt(a.getEnergy());
+				}
+				if (bChoice = true) {
+					bRoll = Critter.getRandomInt(b.getEnergy());
+				}
+				
+				//a survives encounter and gets half of b's energy
+				//b dies and is removed from the population (and worldModel)
+				int energyWon;
+				if (aRoll >= bRoll) {
+					energyWon = (int)(b.energy / 2);
+					a.energy += energyWon;
+					
+					population.remove(b);
+					CritterWorld.worldModel.get(b.x_coord).get(b.y_coord).remove(b);
+				}
+				
+				//b survives encounter and gets half of a's energy
+				//a dies and is removed from the population (and WorldModel)
+				else {
+					energyWon = (int)(a.energy / 2);
+					b.energy += energyWon;
+					
+					population.remove(a);
+					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
+				}
+			}
+		}
 	}
 }
