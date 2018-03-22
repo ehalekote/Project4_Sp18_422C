@@ -50,4 +50,16 @@ public class CritterA extends Critter {
 
 	@Override
 	public String toString() { return "$"; }
+	
+	public static void runStats(java.util.List<Critter> critterList) {
+		System.out.print("" + critterList.size() + " total CritterAs");	
+		
+		int totalShuffles = 0;
+		for (Object obj : critterList) {
+			CritterA c = (CritterA) obj;
+			totalShuffles = totalShuffles + c.numShuffles;
+		}
+		System.out.print("" + totalShuffles + " total shuffles");
+	}
+	
 }

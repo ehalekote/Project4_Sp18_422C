@@ -83,5 +83,28 @@ public class CritterB extends Critter{
 	
 	@Override
 	public String toString() { return "!"; }
+	
+	public static void runStats(java.util.List<Critter> critterList) {
+		System.out.print("" + critterList.size() + " total CritterBs");	
+		
+		int totalCircles = 0;
+		int clockwise = 0;
+		int counter = 0;
+		for (Object obj : critterList) {
+			CritterB c = (CritterB) obj;
+			totalCircles = totalCircles + c.numCircles;
+			if(c.angle == 0) {
+				clockwise = clockwise + c.numCircles;
+			}
+			else {
+				counter = counter + c.numCircles;
+			}
+		}
+		System.out.print("" + totalCircles + " total circles");
+		System.out.print("" + clockwise + " total clockwise circles");
+		System.out.print("" + counter + " total counter-clockwise circles");
+		
+		
+	}
 
 }

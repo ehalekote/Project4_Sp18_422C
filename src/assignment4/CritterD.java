@@ -44,5 +44,17 @@ public class CritterD extends Critter{
 	
 	@Override
 	public String toString() { return "#"; }
+	
+	public static void runStats(java.util.List<Critter> critterList) {
+		System.out.print("" + critterList.size() + " total CritterDs");	
+		
+		int totalFights = 0;
+		for (Object obj : critterList) {
+			CritterD c = (CritterD) obj;
+			totalFights = totalFights + c.numInitiatedFights;
+		}
+		System.out.print("" + totalFights + " total number of fights initiated");	
+		
+	}
 
 }
