@@ -258,7 +258,9 @@ public abstract class Critter {
 	 */
 	public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException {
 		List<Critter> result = new java.util.ArrayList<Critter>();
-	
+		
+		
+		
 		return result;
 	}
 	
@@ -425,19 +427,32 @@ public abstract class Critter {
 		
 		for (int index = 0; index < encounters.size(); index += 1) {
 			LinkedList<Critter> fighting = encounters.get(index);
+			
+			//the first critter in the linked list will fight all other critters in the linked list in order
 			while (fighting.size() >= 2) {
 				Critter a = fighting.get(0);
 				Critter b = fighting.get(1);
-				boolean aChoice = a.fight(b.toString());
-				boolean bChoice = b.fight(a.toString());
 				
+				//critters attempt to run away if they choose not to fight
+				boolean ran = false; //represents whether a critter successfully moved when trying to run away
+				boolean aChoice = a.fight(b.toString());
+				if (aChoice == false) {
+					a.doTimeStep();
+					ran = !a.hasMoved;
+				}
+				boolean bChoice = b.fight(a.toString());
+				if (bChoice == false) {
+					b.doTimeStep();
+					ran = !b.hasMoved;
+				}
+				
+				//critters who die attempting to run away are removed, no fight occurs
 				if(a.energy <= 0) {
 					fighting.remove(a);
 					population.remove(a);
 					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
 					break;
 				}
-				
 				if(b.energy <= 0) {
 					fighting.remove(b);
 					population.remove(b);
@@ -445,6 +460,10 @@ public abstract class Critter {
 					break;
 				}
 				
+				//if critters are alive and still in the same space after they make a choice to fight or not, they fight
+				if (ran = true) {
+					break;
+				}
 				int aRoll = 0;
 				int bRoll = 0;
 				if (aChoice = true) {
