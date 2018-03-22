@@ -1,15 +1,14 @@
 package assignment4;
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
- * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
- * Slip days used: <0>
- * Fall 2016
+ * Eshan Halekote
+ * eh23427
+ * 15460
+ * Benjamin Guo
+ * bzg74
+ * 15460
+ * Slip days used: <0
+ * Spring 2018
  */
 
 
@@ -29,6 +28,7 @@ public abstract class Critter {
 	private static String myPackage;
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
+	private boolean hasMoved = false;
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
@@ -152,27 +152,39 @@ public abstract class Critter {
 	 * @param direction Direction to move critter
 	 */
 	protected final void walk(int direction) {
-		if(exists()) {
-			this.energy = this.energy - Params.walk_energy_cost;
-			oneStep(direction);
+		if(this.hasMoved == false) {
+			if(exists()) {
+				this.energy = this.energy - Params.walk_energy_cost;
+				oneStep(direction);
+				this.hasMoved = true;
+			}
+			else {
+				System.out.println("This Critter doesn't exist in the world/population and so it cannot walk");
+			}
 		}
 		else {
-			System.out.println("This Critter doesn't exist in the world/population and so it cannot walk");
+			this.energy = this.energy - Params.walk_energy_cost;			
 		}
-	}
+	}	
 	
 	/**
 	 * Makes a critter take two steps in the specified direction
 	 * @param direction Direction to run in
 	 */
 	protected final void run(int direction) {
-		if(exists()) {
-			this.energy = this.energy - Params.run_energy_cost;
-			oneStep(direction);
-			oneStep(direction);
+		if(this.hasMoved == false) {
+			if(exists()) {
+				this.energy = this.energy - Params.run_energy_cost;
+				oneStep(direction);
+				oneStep(direction);
+				this.hasMoved = true;
+			}
+			else {
+				System.out.println("This Critter doesn't exist in the world/population and so it cannot run");
+			}
 		}
 		else {
-			System.out.println("This Critter doesn't exist in the world/population and so it cannot run");
+			this.energy = this.energy - Params.run_energy_cost;		
 		}
 	}
 	
@@ -389,8 +401,14 @@ public abstract class Critter {
 		for(Critter crit: population) {
 			crit.doTimeStep();
 		}
+		
 		CritterWorld.cullDeadCritters();
 		resolveEncounters();
+		
+		for(Critter crit: population) {
+			crit.hasMoved = false;
+		}
+		
 	}
 	
 	/**
