@@ -180,6 +180,23 @@ public class Main {
         			
         			break;
         			
+        		case "stats":
+        			if (splitCommands.length == 1 || splitCommands.length > 2) {
+        				System.out.println("error processing: ");
+        			}
+        			else {
+        				try {
+        					String critterClass = "assignment4." +  splitCommands[1];
+        					Class c = Class.forName(critterClass);
+        					Critter crit = (Critter)c.newInstance();
+        					List<Critter> critterStat = Critter.getInstances(splitCommands[1]);
+        					Critter.runStats(critterStat);
+        				}
+        				catch (Exception | NoClassDefFoundError e) {
+        					System.out.println("error processing: " + wholeCommand);
+        				}
+        			}
+        			
         		default:
         			System.out.println("invalid command: " + wholeCommand);
         			break;
