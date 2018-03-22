@@ -230,7 +230,7 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).add(crit);
 			
 		} catch(Exception e) {
-			System.out.println("YOU MESSED UP");
+			System.out.println("error processing: " + "make" );
 			System.out.println(e);
 			
 		}
@@ -407,13 +407,23 @@ public abstract class Critter {
 		
 		for (int index = 0; index < encounters.size(); index += 1) {
 			LinkedList<Critter> fighting = encounters.get(index);
-			if (fighting.size() == 2) {
+			while (fighting.size() >= 2) {
 				Critter a = fighting.get(0);
 				Critter b = fighting.get(1);
 				boolean aChoice = a.fight(b.toString());
 				boolean bChoice = b.fight(a.toString());
 				
-				//must add code to consider if critters die trying to run away
+				if(a.energy <= 0) {
+					fighting.remove(a);
+					population.remove(a);
+					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
+				}
+				
+				if(b.energy >= 0) {
+					fighting.remove(b);
+					population.remove(b);
+					CritterWorld.worldModel.get(b.x_coord).get(b.y_coord).remove(b);
+				}
 				
 				int aRoll = 0;
 				int bRoll = 0;
@@ -431,6 +441,7 @@ public abstract class Critter {
 					energyWon = (int)(b.energy / 2);
 					a.energy += energyWon;
 					
+					fighting.remove(b);
 					population.remove(b);
 					CritterWorld.worldModel.get(b.x_coord).get(b.y_coord).remove(b);
 				}
@@ -441,6 +452,7 @@ public abstract class Critter {
 					energyWon = (int)(a.energy / 2);
 					b.energy += energyWon;
 					
+					fighting.remove(a);
 					population.remove(a);
 					CritterWorld.worldModel.get(a.x_coord).get(a.y_coord).remove(a);
 				}
