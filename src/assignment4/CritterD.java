@@ -20,6 +20,9 @@ public class CritterD extends Critter{
 	private int direction = 0;
 	int numInitiatedFights = 0;
 	
+	/**
+	 * CritterD's override of Critter doTimeStep. Zigzags upwards.
+	 */
 	@Override
 	public void doTimeStep() {
 		if(direction == 0) {
@@ -30,7 +33,10 @@ public class CritterD extends Critter{
 		}
 		
 	}
-
+	
+	/**
+	 * CritterD randomly fights other Critters with a 1/3 chance
+	 */
 	@Override
 	public boolean fight(String oponent) {
 		numInitiatedFights++;
@@ -42,18 +48,25 @@ public class CritterD extends Critter{
 		
 	}
 	
+	/**
+	 * CritterD is #
+	 */
 	@Override
 	public String toString() { return "#"; }
 	
+	/**
+	 * Checks for number of initiated fights
+	 * @param critterList
+	 */
 	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterDs");	
+		System.out.print("" + critterList.size() + " total CritterDs   ");	
 		
 		int totalFights = 0;
 		for (Object obj : critterList) {
 			CritterD c = (CritterD) obj;
 			totalFights = totalFights + c.numInitiatedFights;
 		}
-		System.out.print("" + totalFights + " total number of fights initiated");	
+		System.out.println("" + totalFights + " total number of fights initiated   ");	
 		
 	}
 
