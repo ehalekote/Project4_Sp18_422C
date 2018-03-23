@@ -391,17 +391,46 @@ public abstract class Critter {
 	
 	
 	public static void worldTimeStep() {
+		//calls doTimeStep for every living critter
 		for(Critter crit: population) {
 			crit.doTimeStep();
 		}
 		
+		//critters who are out of energy at this point are culled
 		CritterWorld.cullDeadCritters();
+		
+		//critters occupying the same space after moving must fight with one another
+		//dead critters are automatically removed in this step
 		resolveEncounters();
 		
+		//flag for checking if critter has moved during a time step is reset
 		for(Critter crit: population) {
 			crit.hasMoved = false;
 		}
 		
+		//rest energy is deducted from every critter, regardless if they moved or not
+		//critters who are out of energy at this point are culled
+		for(Critter crit: population) {
+			crit.energy -= Params.rest_energy_cost;
+		}		
+		CritterWorld.cullDeadCritters();
+		
+		//algae of a particular amount (specified in Params.java) are generated and immediately added to the population
+		for(int i = 0; i < Params.refresh_algae_count; i += 1) {
+			try {
+				makeCritter("Algae");
+			}
+			catch (InvalidCritterException e) {
+				System.out.println("You tried to generate " + Params.refresh_algae_count + " algae, but you messed up.");
+			}
+		}
+		
+		//add babies to population and world model, then clear from babies list
+		population.addAll(babies);
+		for (Critter baby: babies) {
+			CritterWorld.worldModel.get(baby.x_coord).get(baby.y_coord).add(baby);
+		}
+		babies.clear();
 	}
 	
 	/**
@@ -425,6 +454,7 @@ public abstract class Critter {
 			}
 		}
 		
+		//iterate through each group of critters, each group will be called fighting
 		for (int index = 0; index < encounters.size(); index += 1) {
 			LinkedList<Critter> fighting = encounters.get(index);
 			
@@ -434,7 +464,8 @@ public abstract class Critter {
 				Critter b = fighting.get(1);
 				
 				//critters attempt to run away if they choose not to fight
-				boolean ran = false; //represents whether a critter successfully moved when trying to run away
+				//the boolean ran represents whether a critter successfully moved when trying to run away (opposite of hasMoved)
+				boolean ran = false;
 				boolean aChoice = a.fight(b.toString());
 				if (aChoice == false) {
 					a.doTimeStep();
@@ -446,7 +477,7 @@ public abstract class Critter {
 					ran = !b.hasMoved;
 				}
 				
-				//critters who die attempting to run away are removed, no fight occurs
+				//critters who die attempting to run away (whether successful or not) are removed, no fight occurs
 				if(a.energy <= 0) {
 					fighting.remove(a);
 					population.remove(a);
