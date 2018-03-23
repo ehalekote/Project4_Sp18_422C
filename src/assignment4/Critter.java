@@ -495,19 +495,24 @@ public abstract class Critter {
 			while (fighting.size() >= 2) {
 				Critter a = fighting.get(0);
 				Critter b = fighting.get(1);
+				Algae alg = new Algae();
 				
 				//critters attempt to run away if they choose not to fight
 				//the boolean ran represents whether a critter successfully moved when trying to run away (opposite of hasMoved)
 				boolean ran = false;
 				boolean aChoice = a.fight(b.toString());
 				if (aChoice == false) {
-					a.doTimeStep();
-					ran = !a.hasMoved;
+					if (!(a instanceof Algae)) {
+						a.doTimeStep();
+						ran = !a.hasMoved;
+					}
 				}
 				boolean bChoice = b.fight(a.toString());
 				if (bChoice == false) {
-					b.doTimeStep();
-					ran = !b.hasMoved;
+					if (!(b instanceof Algae)) {
+						b.doTimeStep();
+						ran = !a.hasMoved;
+					}
 				}
 				
 				//critters who die attempting to run away (whether successful or not) are removed, no fight occurs
