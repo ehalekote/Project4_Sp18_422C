@@ -21,6 +21,9 @@ public class CritterC extends Critter{
 	int numRuns = 0;
 	int directionToMove = Critter.getRandomInt(8);
 	
+	/**
+	 * CritterC's override of Critter doTimeStep. Randomly walks or runs in a predetermined direction (determined upon creation). Reproduces if it has more than twice required minimum reproduction energy.
+	 */
 	@Override
 	public void doTimeStep() {
 		int random = Critter.getRandomInt(2);
@@ -33,8 +36,16 @@ public class CritterC extends Critter{
 			run(directionToMove);
 			numRuns++;
 		}
+		
+		if(this.getEnergy() > 2*Params.min_reproduce_energy) {
+			CritterC offspring = new CritterC(); 
+			this.reproduce(offspring, (directionToMove+4)%8);
+		}
 	}
 
+	/**
+	 * Always fights unless it is fighting an enemy of the same CritterC type
+	 */
 	@Override
 	public boolean fight(String oponent) {
 		if(oponent == "&") {
@@ -43,11 +54,18 @@ public class CritterC extends Critter{
 		return true;
 	}
 	
+	/**
+	 * CritterC is &
+	 */
 	@Override
 	public String toString() { return "&"; }
 	
+	/**
+	 * Checks for number of runs vs walks for CritterC
+	 * @param critterList
+	 */
 	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterCs");	
+		System.out.print("" + critterList.size() + " total CritterCs   ");	
 		
 		int totalWalks = 0;
 		int totalRuns = 0;
@@ -56,8 +74,8 @@ public class CritterC extends Critter{
 			totalWalks = totalWalks + c.numWalks;
 			totalRuns = totalRuns + c.numRuns;
 		}
-		System.out.print("" + totalWalks + " total number of walks");
-		System.out.print("" + totalRuns + " total number of runs");		
+		System.out.print("" + totalWalks + " total number of walks   ");
+		System.out.println("" + totalRuns + " total number of runs   ");		
 		
 	}
 

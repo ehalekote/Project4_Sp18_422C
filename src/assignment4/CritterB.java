@@ -22,6 +22,9 @@ public class CritterB extends Critter{
 	int numCircles = 0;
 	int angle = Critter.getRandomInt(2);
 	
+	/**
+	 * CritterB's doTimeStep. Walks in circles.
+	 */
 	@Override
 	public void doTimeStep() {
 		if(angle == 0) {
@@ -74,18 +77,27 @@ public class CritterB extends Critter{
 		}
 		
 	}
-
+	/**
+	 * CritterB always fights
+	 */
 	@Override
 	public boolean fight(String oponent) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
+	/**
+	 * CritterB is !
+	 */
 	@Override
 	public String toString() { return "!"; }
 	
+	/**
+	 * Checks number of counter-clockwise vs. clockwise walks
+	 * @param critterList
+	 */
 	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterBs");	
+		System.out.print("" + critterList.size() + " total CritterBs   ");	
 		
 		int totalCircles = 0;
 		int clockwise = 0;
@@ -100,9 +112,9 @@ public class CritterB extends Critter{
 				counter = counter + c.numCircles;
 			}
 		}
-		System.out.print("" + totalCircles + " total circles");
-		System.out.print("" + clockwise + " total clockwise circles");
-		System.out.print("" + counter + " total counter-clockwise circles");
+		System.out.print("" + totalCircles + "   ");
+		System.out.print("" + clockwise + " total clockwise circles   ");
+		System.out.println("" + counter + " total counter-clockwise circles   ");
 		
 		
 	}

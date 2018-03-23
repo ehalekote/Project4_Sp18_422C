@@ -21,6 +21,9 @@ public class CritterA extends Critter {
 	private int numShufflesFlag = 0;
 	int numShuffles = 0;
 	
+	/**
+	 * This critter shuffles back and forth from the spot it was first spawned.
+	 */
 	@Override
 	public void doTimeStep() {
 		if(direction == 0) {
@@ -40,6 +43,9 @@ public class CritterA extends Critter {
 		
 	}
 
+	/**
+	 * This critter only fights critters of the same type
+	 */
 	@Override
 	public boolean fight(String oponent) {
 		if(oponent == "$") {
@@ -48,18 +54,25 @@ public class CritterA extends Critter {
 		return false;
 	}
 
+	/**
+	 * CritterA is $
+	 */
 	@Override
 	public String toString() { return "$"; }
 	
+	/**
+	 * Checks for number of total shuffles
+	 * @param critterList
+	 */
 	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterAs");	
+		System.out.print("" + critterList.size() + " total CritterAs   ");	
 		
 		int totalShuffles = 0;
 		for (Object obj : critterList) {
 			CritterA c = (CritterA) obj;
 			totalShuffles = totalShuffles + c.numShuffles;
 		}
-		System.out.print("" + totalShuffles + " total shuffles");
+		System.out.println("" + totalShuffles + " total shuffles   ");
 	}
 	
 }
