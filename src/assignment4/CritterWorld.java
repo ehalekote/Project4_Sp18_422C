@@ -48,7 +48,7 @@ public class CritterWorld {
 		for(int y=0;y<Params.world_height;y++) {
 			System.out.print("|");
 			for(int x=0;x<Params.world_width;x++) {
-				if(!worldModel.get(x).get(y).isEmpty() && worldModel.get(x).get(y).size() == 1) {
+				if(!worldModel.get(x).get(y).isEmpty() && worldModel.get(x).get(y).size() >=1) {
 					System.out.print(worldModel.get(x).get(y).get(0).toString());
 				}
 				else {System.out.print(" ");}

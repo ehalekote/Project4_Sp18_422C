@@ -84,7 +84,9 @@ public class Main {
         				System.out.println("error processing: " + wholeCommand);
         				break;
         			}
-        			System.out.println("goodbye");
+
+        			//System.out.println("quit");
+
         			exit = true;
         			break;
         			
@@ -93,14 +95,14 @@ public class Main {
         				System.out.println("error processing: " + wholeCommand);
         				break;
         			}
-        			System.out.println("Display of world:");
+        			//System.out.println("Display of world:");
         			CritterWorld.displayWorld();
         			break;
         			
         		case "step":
         			//case when user wants to advance world by 1 time step
         			if (splitCommands.length == 1) {
-            			System.out.println("World has been advanced by 1 time step.");
+            			//System.out.println("World has been advanced by 1 time step.");
             			Critter.worldTimeStep(); ////WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
         			}
         			
@@ -131,7 +133,7 @@ public class Main {
         			else if (splitCommands.length > 1) {
         				try {
         					long seed = Long.parseLong(splitCommands[1]);
-        					System.out.println("Seed is set at " + splitCommands[1] + ".");
+        					//System.out.println("Seed is set at " + splitCommands[1] + ".");
         					Critter.setSeed(seed);
         				}
         				catch (NumberFormatException e) {
@@ -169,7 +171,7 @@ public class Main {
         					Class c = Class.forName(critterClass);
         					Critter crit = (Critter)c.newInstance();
         					int makeCount = Integer.parseInt(splitCommands[2]);
-        					System.out.println("You are going to make " + makeCount + " critters of " + splitCommands[1] + " type.");
+        					//System.out.println("You are going to make " + makeCount + " critters of " + splitCommands[1] + " type.");
         					for (int i = 0; i < makeCount; i += 1) {
         						Critter.makeCritter(splitCommands[1]);
         					}

@@ -261,7 +261,7 @@ public abstract class Critter {
 			CritterWorld.worldModel.get(crit.x_coord).get(crit.y_coord).add(crit);
 			
 		} catch(Exception e) {
-			System.out.println("error processing: " + "make" );
+			//System.out.println("error processing: " + "make" );
 			System.out.println(e);
 			
 		}
