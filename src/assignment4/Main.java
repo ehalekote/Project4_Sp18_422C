@@ -84,7 +84,9 @@ public class Main {
         				System.out.println("error processing: " + wholeCommand);
         				break;
         			}
+
         			//System.out.println("quit");
+
         			exit = true;
         			break;
         			
@@ -205,30 +207,16 @@ public class Main {
         			}
         			break;
         			
+        		//case "":
+        			//System.out.println("enter a valid command");
+        			//break;
+        			
         		default:
         			System.out.println("invalid command: " + wholeCommand);
         			break;
-        	}
-        }
-        
-        //While (Command is not EXIT):
-	        //do {
-	        		//Get and execute user input commands
-	        		//for each step:
-		        		//WORLDTIMESTEP - Everyone moves, Critters can reproduce at this point and add offspring to babies array
-			        //Critter.worldTimeStep();
-			        
-			        //RESOLVE ENCOUNTERS
-			        
-			        //ADD BABIES TO WORLDMODEL AND POPULATION
-			        
-			        //CULL DEAD CRITTERS
-			        //CritterWorld.cullDeadCritters();
-			        
-		        		//ADD ALGAE
-	        //}
-	        //while(false); //Should be while user input != "quit"
-        /* Write your code above */
+        			
+        	} //end of switch statement
+        } //end of main while loop
         
         System.out.flush();
 

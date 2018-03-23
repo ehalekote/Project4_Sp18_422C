@@ -22,7 +22,10 @@ import java.util.Random;
  * no new public, protected or default-package code or data can be added to Critter
  */
 
-
+/**
+ * Models creatures that live on a 2D grid. Critters can walk, run, reproduce, and fight with one another.
+ * Everything a critter does subtracts from it's energy. When a critter has no enery left, it is dead.
+ */
 public abstract class Critter {
 	
 	private static String myPackage;
@@ -36,19 +39,35 @@ public abstract class Critter {
 	}
 	
 	private static java.util.Random rand = new java.util.Random();
+	
+	/**
+	 * Generates a random number that is uniformly distributed. This function is used in conjunction with setSeed for testing purposes.
+	 * @param max the max integer that the random number can be
+	 */
 	public static int getRandomInt(int max) {
 		return rand.nextInt(max);
 	}
-	
+
+	/**
+	 * Sets the seed for random number generation. This function is used in conjunction with getRandomInt for testing purposes.
+	 * @param new_seed is the desired seed value for random number generation
+	 */
 	public static void setSeed(long new_seed) {
 		rand = new java.util.Random(new_seed);
 	}
 	
-	
-	/* a one-character long string that visually depicts your critter in the ASCII interface */
+	/**
+	 * Gives the character that represents the critter in the view component.
+	 * @return the character which represents the critter on the grid
+	 */
 	public String toString() { return ""; }
 	
 	private int energy = 0;
+	
+	/**
+	 * Gives the energy that a critter has left.
+	 * @return the energy level of a critter
+	 */
 	protected int getEnergy() { return energy; }
 	
 	private int x_coord;
@@ -56,7 +75,7 @@ public abstract class Critter {
 	
 	/**
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
-	 * @return
+	 * @return true if critter exists, false otherwise
 	 */
 	protected boolean exists() {
 		if(CritterWorld.worldModel.get(this.x_coord).get(this.y_coord).contains(this) && population.contains(this)) {
@@ -220,7 +239,7 @@ public abstract class Critter {
 	 * (Java weirdness: Exception throwing does not work properly if the parameter has lower-case instead of
 	 * upper. For example, if craig is supplied instead of Craig, an error is thrown instead of
 	 * an Exception.)
-	 * @param critter_class_name
+	 * @param critter_class_name What kind of Critter is to be made.  Unqualified class name.
 	 * @throws InvalidCritterException
 	 */
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {	
@@ -398,19 +417,53 @@ public abstract class Critter {
 		population.clear();
 	}
 	
-	
+	/**
+	 * Advances the world by one time step. Every critter does something during this time step (e.g. walk, run, reproduce).
+	 * Critters who occupy the same space after moving fight with one another. Dead critters are removed from the program.
+	 * Algae of a certain amount is generated and added to the world.
+	 * Critters that are created are added to the world at the very end of the time step.
+	 */
 	public static void worldTimeStep() {
+		//calls doTimeStep for every living critter
 		for(Critter crit: population) {
 			crit.doTimeStep();
 		}
 		
+		//critters who are out of energy at this point are culled
 		CritterWorld.cullDeadCritters();
+		
+		//critters occupying the same space after moving must fight with one another
+		//dead critters are automatically removed in this step
 		resolveEncounters();
 		
+		//flag for checking if critter has moved during a time step is reset
 		for(Critter crit: population) {
 			crit.hasMoved = false;
 		}
 		
+		//rest energy is deducted from every critter, regardless if they moved or not
+		//critters who are out of energy at this point are culled
+		for(Critter crit: population) {
+			crit.energy -= Params.rest_energy_cost;
+		}		
+		CritterWorld.cullDeadCritters();
+		
+		//algae of a particular amount (specified in Params.java) are generated and immediately added to the population
+		for(int i = 0; i < Params.refresh_algae_count; i += 1) {
+			try {
+				makeCritter("Algae");
+			}
+			catch (InvalidCritterException e) {
+				System.out.println("You tried to generate " + Params.refresh_algae_count + " algae, but you messed up.");
+			}
+		}
+		
+		//add babies to population and world model, then clear from babies list
+		population.addAll(babies);
+		for (Critter baby: babies) {
+			CritterWorld.worldModel.get(baby.x_coord).get(baby.y_coord).add(baby);
+		}
+		babies.clear();
 	}
 	
 	/**
@@ -434,6 +487,7 @@ public abstract class Critter {
 			}
 		}
 		
+		//iterate through each group of critters, each group will be called fighting
 		for (int index = 0; index < encounters.size(); index += 1) {
 			LinkedList<Critter> fighting = encounters.get(index);
 			
@@ -443,7 +497,8 @@ public abstract class Critter {
 				Critter b = fighting.get(1);
 				
 				//critters attempt to run away if they choose not to fight
-				boolean ran = false; //represents whether a critter successfully moved when trying to run away
+				//the boolean ran represents whether a critter successfully moved when trying to run away (opposite of hasMoved)
+				boolean ran = false;
 				boolean aChoice = a.fight(b.toString());
 				if (aChoice == false) {
 					a.doTimeStep();
@@ -455,7 +510,7 @@ public abstract class Critter {
 					ran = !b.hasMoved;
 				}
 				
-				//critters who die attempting to run away are removed, no fight occurs
+				//critters who die attempting to run away (whether successful or not) are removed, no fight occurs
 				if(a.energy <= 0) {
 					fighting.remove(a);
 					population.remove(a);
