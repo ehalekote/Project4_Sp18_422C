@@ -8,7 +8,7 @@ package assignment4;
  * Benjamin Guo
  * bzg74
  * 15460
- * Slip days used: <0
+ * Slip days used: 0
  * Spring 2018
  */
 
