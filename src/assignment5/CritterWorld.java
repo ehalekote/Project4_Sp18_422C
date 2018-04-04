@@ -1,4 +1,4 @@
-package assignment4;
+package assignment5;
 /* CRITTERS CritterWorld.java
  * EE422C Project 4 submission by
  * Eshan Halekote
@@ -12,7 +12,7 @@ package assignment4;
  */
 import java.util.List;
 
-import assignment4.Critter.TestCritter;
+import assignment5.Critter.TestCritter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

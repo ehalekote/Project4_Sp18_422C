@@ -1,4 +1,4 @@
-package assignment4;
+package assignment5;
 
 /* CRITTERS Main.java
  * EE422C Project 4 submission by
@@ -154,7 +154,7 @@ public class Main {
         			//case when user wants to make just one critter of specified type
         			else if (splitCommands.length == 2) {
         				try {
-        					String critterClass = "assignment4." +  splitCommands[1];
+        					String critterClass = "assignment5." +  splitCommands[1];
         					Class c = Class.forName(critterClass);
         					Critter crit = (Critter)c.newInstance();
         					Critter.makeCritter(splitCommands[1]);
@@ -167,7 +167,7 @@ public class Main {
         			//case when user wants to make a specified amount of specified critter type
         			else {
         				try {
-        					String critterClass = "assignment4." +  splitCommands[1];
+        					String critterClass = "assignment5." +  splitCommands[1];
         					Class c = Class.forName(critterClass);
         					Critter crit = (Critter)c.newInstance();
         					int makeCount = Integer.parseInt(splitCommands[2]);
@@ -190,7 +190,7 @@ public class Main {
         			else {
         				try {
         					//see if specified class is concrete subclass of Critter
-        					String critterClass = "assignment4." +  splitCommands[1];
+        					String critterClass = "assignment5." +  splitCommands[1];
         					Class c = Class.forName(critterClass);
         					Critter crit = (Critter)c.newInstance();
         					
