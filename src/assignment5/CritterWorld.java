@@ -21,6 +21,9 @@ import java.util.LinkedList;
 public class CritterWorld {
 	
 	static ArrayList<ArrayList<LinkedList<Critter>>> worldModel = new ArrayList<ArrayList<LinkedList<Critter>>>();		//Represents the game board, indexed as X, Y, list of critters in the spot
+	//static String[][] copyWorld = new String[Params.world_width][Params.world_height];
+	static ArrayList<ArrayList<LinkedList<Critter>>> copyWorld = new ArrayList<ArrayList<LinkedList<Critter>>>();
+	
 	
 	/**
 	 * Generates an empty world
@@ -28,8 +31,10 @@ public class CritterWorld {
 	CritterWorld(){
 		for(int x=0; x<Params.world_width; x++) {
 			worldModel.add(new ArrayList<LinkedList<Critter>>(Params.world_height));
+			copyWorld.add(new ArrayList<LinkedList<Critter>>(Params.world_height));
 			for(int y=0; y<Params.world_height; y++) {
 				worldModel.get(x).add(new LinkedList());
+				copyWorld.get(x).add(new LinkedList());
 			}
 		}
 	}

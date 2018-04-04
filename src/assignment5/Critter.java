@@ -32,10 +32,59 @@ public abstract class Critter {
 	private	static List<Critter> population = new java.util.ArrayList<Critter>();
 	private static List<Critter> babies = new java.util.ArrayList<Critter>();
 	private boolean hasMoved = false;
+	public static boolean lookDoTimeStep = true;
 
 	// Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
 	static {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
+	}
+	
+	protected final String look(int direction, boolean steps) {
+		
+		if(lookDoTimeStep == true) {	//In doTimeStep
+			//Go to the copy of worldModel
+			//check the correct node that will tentatively be moved to
+			//return 
+			Critter temp = new Craig();
+			temp.x_coord = this.old_x;
+			temp.y_coord = this.old_y;
+			
+			if(steps) {
+				temp.updateCoordsFromStep(direction);
+				temp.updateCoordsFromStep(direction);
+			}
+			else {
+				temp.updateCoordsFromStep(direction);
+			}
+			
+			if(!(CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).isEmpty())) {
+				return CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).getFirst().toString();
+			}
+			else {
+				return null;
+			}
+			
+		}
+		else {	//In Fight
+			Critter temp = new Craig();
+			temp.x_coord = this.x_coord;
+			temp.y_coord = this.y_coord;
+			
+			if(steps) {
+				temp.updateCoordsFromStep(direction);
+				temp.updateCoordsFromStep(direction);
+			}
+			else {
+				temp.updateCoordsFromStep(direction);
+			}
+			
+			if(!(CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).isEmpty())) {
+				return CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).getFirst().toString();
+			}
+			else {
+				return null;
+			}
+		}
 	}
 	
 	private static java.util.Random rand = new java.util.Random();
@@ -72,6 +121,9 @@ public abstract class Critter {
 	
 	private int x_coord;
 	private int y_coord;
+	
+	private int old_x;
+	private int old_y;
 	
 	/**
 	 * Checks to see if a Critter Exists in the world (i.e. If it is still alive)
@@ -417,6 +469,7 @@ public abstract class Critter {
 		population.clear();
 	}
 	
+	
 	/**
 	 * Advances the world by one time step. Every critter does something during this time step (e.g. walk, run, reproduce).
 	 * Critters who occupy the same space after moving fight with one another. Dead critters are removed from the program.
@@ -424,7 +477,26 @@ public abstract class Critter {
 	 * Critters that are created are added to the world at the very end of the time step.
 	 */
 	public static void worldTimeStep() {
+		
+		//Make copy of worldModel before doTimeSteps start happening
+		for(ArrayList<LinkedList<Critter>> row1: CritterWorld.copyWorld) {
+			for(LinkedList<Critter> element1: row1) {
+				element1.clear();
+			}
+		}
+		//Populate copyWorld
+		for(ArrayList<LinkedList<Critter>> row: CritterWorld.worldModel) {
+			for(LinkedList<Critter> element: row) {
+				if(!(element.isEmpty())) {
+					CritterWorld.copyWorld.get(element.getFirst().x_coord).get(element.getFirst().y_coord).add(element.getFirst());
+					element.getFirst().old_x = element.getFirst().x_coord;
+					element.getFirst().old_y = element.getFirst().y_coord;
+				}
+			}
+		}
+		
 		//calls doTimeStep for every living critter
+		lookDoTimeStep = true;
 		for(Critter crit: population) {
 			crit.doTimeStep();
 		}
@@ -434,6 +506,7 @@ public abstract class Critter {
 		
 		//critters occupying the same space after moving must fight with one another
 		//dead critters are automatically removed in this step
+		lookDoTimeStep = false;
 		resolveEncounters();
 		
 		//flag for checking if critter has moved during a time step is reset
