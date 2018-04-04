@@ -1,4 +1,4 @@
-package assignment4;
+package assignment5;
 /* CRITTERS Critter.java
  * EE422C Project 4 submission by
  * Eshan Halekote
@@ -245,7 +245,7 @@ public abstract class Critter {
 	public static void makeCritter(String critter_class_name) throws InvalidCritterException {	
 		try {
 			//Generate new critter from string critter_class_name
-			critter_class_name = "assignment4." +  critter_class_name;
+			critter_class_name = "assignment5." +  critter_class_name;
 			Class c = Class.forName(critter_class_name);
 			Critter crit = (Critter)c.newInstance();
 			
