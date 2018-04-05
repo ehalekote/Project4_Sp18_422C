@@ -26,6 +26,7 @@ public class CritterA extends Critter {
 	 */
 	@Override
 	public void doTimeStep() {
+		
 		if(direction == 0) {
 			walk(0);
 			direction = 1;
