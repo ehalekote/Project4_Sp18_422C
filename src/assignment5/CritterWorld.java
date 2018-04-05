@@ -11,11 +11,20 @@ package assignment5;
  * Spring 2018
  */
 import java.util.List;
+import java.util.ResourceBundle.Control;
 
 import assignment5.Critter.TestCritter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -42,11 +51,51 @@ public class CritterWorld {
 			}
 		}
 	}
+	
+	static boolean rebaseFlag = true;
+	private static void rebaseWorld() {
+		
+		ArrayList<Node> temp = new ArrayList<Node>();
+ 		for(Node node: Main.grid.getChildren()) {
+ 			if(node instanceof Shape) {
+ 				temp.add(node);
+ 			}
+			
+		}
+ 		
+ 		for(Node remove: temp) {
+ 			Main.grid.getChildren().remove(remove);
+ 		}
+ 		temp.clear();
+		
+		if(rebaseFlag) {
+			 Main.grid.setGridLinesVisible(true);
+		        for (int row = 0; row < Params.world_width; row++) {
+		            for (int col = 0; col < Params.world_height; col ++) {
+		                StackPane square = new StackPane();
+		                //square.setStyle("-fx-border-color: black");
+		                Main.grid.add(square, col, row);
+		                
+		            }
+		        }
+		        
+		        for (int i = 0; i < Params.world_width; i++) {
+		        		Main.grid.getRowConstraints().add(new RowConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, VPos.CENTER, true));
+		        }
+		        for (int i = 0; i < Params.world_height; i++) {
+		        		Main.grid.getColumnConstraints().add(new ColumnConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.CENTER, true));
+		        }
+			}
+		
+			rebaseFlag = false;
+		}
+	
 	/**
 	 * Prints the world to the console
 	 */
 	public static void displayWorld() {
 		 //Clear critters grid
+		rebaseWorld();
 		paintWorld();
 		
 		//Upper Border
@@ -81,6 +130,8 @@ public class CritterWorld {
 		Shape s = null;
 		int size = 10;
 		
+		shapeIndex = Critter.getRandomInt(2);
+		
 		switch(shapeIndex) {
 		case 0: s = new Rectangle(size, size); 
 			s.setFill(javafx.scene.paint.Color.RED); break;
@@ -97,6 +148,10 @@ public class CritterWorld {
 			Shape s = getIcon(i);	// convert the index to an icon.
 			Main.grid.add(s, i, i); // add the shape to the grid.
 		}
+		//Iterate through all critters in worldModel
+		//get their corresponding Shape value
+		//Add the shape to the grid
+		
 		
 	}
 	
