@@ -25,7 +25,10 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Border;
@@ -100,7 +103,9 @@ public class Main extends Application{
         /* Write your code below. */
         
         //creating show button that creates new window which displays critter world
-      	Button showButton = new Button("Show");
+        Alert intAlert = new Alert(AlertType.ERROR, "You must enter an integer value.", ButtonType.OK);
+        
+        Button showButton = new Button("Show");
       	showButton.setOnAction(new EventHandler<ActionEvent>() {
       		@Override
       		public void handle(ActionEvent event) {
@@ -134,11 +139,49 @@ public class Main extends Application{
       	//creating seed button and text field for # entry
       	Button seedButton = new Button("Seed");
       	TextField seedNumber = new TextField();
+      	seedButton.setOnAction(new EventHandler<ActionEvent>() {
+      		@Override
+      		public void handle(ActionEvent event) {
+      			String possibleSeed = seedNumber.getText();
+      			try {
+      				long seed = Long.parseLong(possibleSeed);
+      				Critter.setSeed(seed);
+      			}
+      			catch (NumberFormatException e) {
+      				intAlert.showAndWait();
+      				
+      				if (intAlert.getResult() == ButtonType.OK) {
+      					intAlert.close();
+      				}
+      			}
+      		}
+      	});
       		
       	//creating step button and drop-down menu for # of steps
       	Button stepButton = new Button("Step");
-      	ChoiceBox stepChoiceBox = new ChoiceBox();
-      	stepChoiceBox.getItems().addAll("1", "5", "10", "25", "100", "500", "1000");
+      	TextField stepNumber = new TextField();
+      	//ChoiceBox stepChoiceBox = new ChoiceBox();
+      	//stepChoiceBox.getItems().addAll("1", "5", "10", "25", "100", "500", "1000");
+      	//stepChoiceBox.getSelectionModel().selectFirst();
+      	stepButton.setOnAction(new EventHandler<ActionEvent>() {
+      		public void handle(ActionEvent event) {
+      			String possibleStep = stepNumber.getText();
+      			try {
+      				int step = Integer.parseInt(possibleStep);
+      				for (int i = 0; i < step; i +=1) {
+      					System.out.println("step " + (i + 1));
+      					//Critter.worldTimeStep();
+      				}
+      			}
+      			catch (NumberFormatException e) {
+      				intAlert.showAndWait();
+      				
+      				if (intAlert.getResult() == ButtonType.OK) {
+      					intAlert.close();
+      				}
+      			}
+      		}
+      	});
       		
       	//creating make button, drop-down menu for critter selection, and text field for # entry
       	Button makeButton = new Button("Make");
@@ -171,26 +214,27 @@ public class Main extends Application{
       	controlGrid.add(seedNumber, 1, 1);
       	
       	controlGrid.add(makeButton, 0, 2);
-      	controlGrid.add(makeChoiceBox, 1, 2);
-      	controlGrid.add(makeNumber, 2, 2);
+      	controlGrid.add(makeNumber, 1, 2);
+      	controlGrid.add(makeChoiceBox, 2, 2);
       	
       	controlGrid.add(stepButton, 0, 3);
-      	controlGrid.add(stepChoiceBox, 1, 3);
+      	controlGrid.add(stepNumber, 1, 3);
       	
       	controlGrid.add(statsButton, 0, 4);
       	controlGrid.add(statsChoiceBox, 1, 4);
       	
-      	Scene controlScene = new Scene(controlGrid);
-      	primaryStage.setTitle("Controller");
-      	primaryStage.setScene(controlScene);
-      	primaryStage.show();
-      	
+      	//styling the UI elements
       	showButton.setStyle("-fx-background-color: seagreen; -fx-text-fill: white;");
       	seedButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         makeButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         stepButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         statsButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         quitButton.setStyle("-fx-background-color: crimson; -fx-text-fill: white;");
+      	
+      	Scene controlScene = new Scene(controlGrid);
+      	primaryStage.setTitle("Controller");
+      	primaryStage.setScene(controlScene);
+      	primaryStage.show();
       	
 //        CritterWorld.displayWorld();
 //        CritterWorld world = new CritterWorld();
