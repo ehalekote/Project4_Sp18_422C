@@ -78,8 +78,8 @@ public abstract class Critter {
 				temp.updateCoordsFromStep(direction);
 			}
 			
-			if(!(CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).isEmpty())) {
-				return CritterWorld.copyWorld.get(temp.x_coord).get(temp.y_coord).getFirst().toString();
+			if(!(CritterWorld.worldModel.get(temp.x_coord).get(temp.y_coord).isEmpty())) {
+				return CritterWorld.worldModel.get(temp.x_coord).get(temp.y_coord).getFirst().toString();
 			}
 			else {
 				return null;
