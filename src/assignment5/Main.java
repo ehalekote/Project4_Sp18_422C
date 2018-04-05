@@ -18,9 +18,16 @@ import java.util.Scanner;
 import java.io.*;
 import java.lang.reflect.Method;
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -92,30 +99,101 @@ public class Main extends Application{
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        grid.setGridLinesVisible(true);
-        for (int row = 0; row < Params.world_width; row++) {
-            for (int col = 0; col < Params.world_height; col ++) {
-                StackPane square = new StackPane();
-                //square.setStyle("-fx-border-color: black");
-                grid.add(square, col, row);
-                
-            }
-        }
-        
-        for (int i = 0; i < Params.world_width; i++) {
-        		grid.getRowConstraints().add(new RowConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, VPos.CENTER, true));
-        }
-        for (int i = 0; i < Params.world_height; i++) {
-        		grid.getColumnConstraints().add(new ColumnConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.CENTER, true));
-        }
-        
-        primaryStage.setScene(new Scene(grid, 400, 400));
-        primaryStage.show();
-        
-        CritterWorld.displayWorld();
-        
-        CritterWorld world = new CritterWorld();
-        boolean exit = false; // quit command will set to true
+        //creating show button, creates new view window
+      	Button showButton = new Button("Show");
+      	showButton.setOnAction(new EventHandler<ActionEvent>() {
+      		@Override
+      		public void handle(ActionEvent event) {
+      	        grid.setGridLinesVisible(true);
+      	        for (int row = 0; row < Params.world_width; row++) {
+      	            for (int col = 0; col < Params.world_height; col ++) {
+      	                StackPane square = new StackPane();
+      	                //square.setStyle("-fx-border-color: black");
+      	                grid.add(square, col, row);
+      	                
+      	            }
+      	        }
+      	        
+      	        for (int i = 0; i < Params.world_width; i++) {
+      	        		grid.getRowConstraints().add(new RowConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, VPos.CENTER, true));
+      	        }
+      	        for (int i = 0; i < Params.world_height; i++) {
+      	        		grid.getColumnConstraints().add(new ColumnConstraints(5, Control.TTL_DONT_CACHE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.CENTER, true));
+      	        }
+      	        
+      	        Stage viewStage = new Stage();
+      	        viewStage.setTitle("Critter World");
+      	        viewStage.setScene(new Scene(grid, 400, 400));
+      	        viewStage.setX(primaryStage.getX() + 200);
+      	        viewStage.setY(primaryStage.getY() + 200);
+      	        viewStage.show();
+      	        
+      		}
+      	});
+      		
+      	//creating seed button and text field for # entry
+      	Button seedButton = new Button("Seed");
+      	TextField seedNumber = new TextField();
+      		
+      	//creating step button and drop-down menu for # of steps
+      	Button stepButton = new Button("Step");
+      	ChoiceBox stepChoiceBox = new ChoiceBox();
+      	stepChoiceBox.getItems().addAll("1", "5", "10", "25", "100", "500", "1000");
+      		
+      	//creating make button, drop-down menu for critter selection, and text field for # entry
+      	Button makeButton = new Button("Make");
+      	ChoiceBox makeChoiceBox = new ChoiceBox(); //write code to retrieve list of critters
+      	makeChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
+      	TextField makeNumber = new TextField();
+      		
+      	//creating runStats button and drop-down menu for critter selection
+      	Button statsButton = new Button("Run Statistics");
+      	ChoiceBox statsChoiceBox = new ChoiceBox();
+      	statsChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
+      		
+      	//creating quit button
+      	Button quitButton = new Button("Quit");
+      	
+      	//creating a grid pane
+      	GridPane controlGrid = new GridPane();
+      	controlGrid.setMinSize(200, 250);
+      	controlGrid.setAlignment(Pos.CENTER);
+      	controlGrid.setPadding(new Insets(10, 10, 10, 10));
+      	controlGrid.setVgap(5);
+      	controlGrid.setHgap(5);
+      	
+      	//arranging the UI elements
+      	controlGrid.add(showButton, 1, 0);
+      	controlGrid.add(quitButton, 2, 0);
+      	
+      	controlGrid.add(seedButton, 0, 1);
+      	controlGrid.add(seedNumber, 1, 1);
+      	
+      	controlGrid.add(makeButton, 0, 2);
+      	controlGrid.add(makeChoiceBox, 1, 2);
+      	controlGrid.add(makeNumber, 2, 2);
+      	
+      	controlGrid.add(stepButton, 0, 3);
+      	controlGrid.add(stepChoiceBox, 1, 3);
+      	
+      	controlGrid.add(statsButton, 0, 4);
+      	controlGrid.add(statsChoiceBox, 1, 4);
+      	
+      	Scene controlScene = new Scene(controlGrid);
+      	primaryStage.setTitle("Controller");
+      	primaryStage.setScene(controlScene);
+      	primaryStage.show();
+      	
+      	showButton.setStyle("-fx-background-color: seagreen; -fx-text-fill: white;");
+      	seedButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        makeButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        stepButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        statsButton.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        quitButton.setStyle("-fx-background-color: crimson; -fx-text-fill: white;");
+      	
+//        CritterWorld.displayWorld();
+//        CritterWorld world = new CritterWorld();
+//        boolean exit = false; // quit command will set to true
 
         
 //        while(!exit) {
