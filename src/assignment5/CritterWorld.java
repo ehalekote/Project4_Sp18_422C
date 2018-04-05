@@ -16,6 +16,9 @@ import assignment5.Critter.TestCritter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -42,12 +45,27 @@ public class CritterWorld {
 			}
 		}
 	}
+	
+	private static void resetBoard() {
+		Main.grid.getChildren().clear();
+		for (int row = 0; row < Params.world_width; row++) {
+            for (int col = 0; col < Params.world_height; col ++) {
+                StackPane square = new StackPane();
+                //square.setStyle("-fx-border-color: black");
+                Main.grid.add(square, col, row);
+                
+            }
+        }
+		
+		Main.grid.setGridLinesVisible(true);
+	}
 	/**
 	 * Prints the world to the console
 	 */
 	public static void displayWorld() {
 		 //Clear critters grid
 		paintWorld();
+		//resetBoard();
 		
 		//Upper Border
 		System.out.print("+"); 

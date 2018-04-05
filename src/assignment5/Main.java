@@ -63,7 +63,7 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) {
     		try {
-    		
+    		CritterWorld world = new CritterWorld();
         if (arg2.length != 0) {
             try {
                 inputFile = arg2[0];
@@ -114,7 +114,6 @@ public class Main extends Application{
         
         CritterWorld.displayWorld();
         
-        CritterWorld world = new CritterWorld();
         boolean exit = false; // quit command will set to true
 
         

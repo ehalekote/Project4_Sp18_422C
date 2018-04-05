@@ -34,14 +34,14 @@ public class TragicCritter extends Critter {
 		}
 	}
 
-	public static String runStats(java.util.List<Critter> avoidingCritters) {
-		if(avoidingCritters.size() >= 2) {
-			return "Still can't get to each other";
-		}
-		else {
-			return "Collided, sadly";
-		}
-	}
+//	public static String runStats(java.util.List<Critter> avoidingCritters) {
+//		if(avoidingCritters.size() >= 2) {
+//			return "Still can't get to each other";
+//		}
+//		else {
+//			return "Collided, sadly";
+//		}
+//	}
 	
 //	@Override
 //	public CritterShape viewShape() { return CritterShape.STAR; }
