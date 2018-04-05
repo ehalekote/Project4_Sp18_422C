@@ -13,10 +13,12 @@ package assignment5;
  */
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.ResourceBundle.Control;
 import java.util.Scanner;
 import java.io.*;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
+import java.lang.Class;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -102,7 +104,21 @@ public class Main extends Application{
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        //creating show button that creates new window which displays critter world
+        List<Class<?>> classList = getClassesInPackage("assignment5");
+        Class baseClass = Critter.class;
+        boolean isCritter;
+        ArrayList<String> critterChoices = new ArrayList<String>();
+        for (int j = 0; j < classList.size(); j += 1) {
+        	isCritter = baseClass.isAssignableFrom(classList.get(j));
+        	//System.out.println(classList.get(j).toString() + " is a Critter: " + isCritter);
+        	if (isCritter) {
+        		String[] critterName = classList.get(j).toString().split("\\.");
+        		System.out.println(critterName[1]);
+        		critterChoices.add(critterName[1]);
+        	}
+        }
+        
+        //creating show button that creates new window which displays critter world    
         Alert intAlert = new Alert(AlertType.ERROR, "You must enter an integer value.", ButtonType.OK);
         
         Button showButton = new Button("Show");
@@ -179,13 +195,17 @@ public class Main extends Application{
       	//creating make button, drop-down menu for critter selection, and text field for # entry
       	Button makeButton = new Button("Make");
       	ChoiceBox makeChoiceBox = new ChoiceBox(); //write code to retrieve list of critters
-      	makeChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
+      	for (int k = 0; k < critterChoices.size(); k += 1) {
+      		makeChoiceBox.getItems().add(critterChoices.get(k));
+      	}
       	TextField makeNumber = new TextField();
       		
       	//creating runStats button and drop-down menu for critter selection
       	Button statsButton = new Button("Run Statistics");
       	ChoiceBox statsChoiceBox = new ChoiceBox();
-      	statsChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
+      	for (int k = 0; k < critterChoices.size(); k += 1) {
+      		statsChoiceBox.getItems().add(critterChoices.get(k));
+      	}
       		
       	//creating quit button
       	Button quitButton = new Button("Quit");
@@ -240,6 +260,30 @@ public class Main extends Application{
     public static void main(String[] args) {
     		arg2 = args;
     		launch(args);
+    }
+    
+    public static final List<Class<?>> getClassesInPackage(String packageName) {
+    	String path = packageName.replaceAll("\\.", File.separator);
+    	List<Class<?>> classes = new ArrayList<>();
+    	String [] classPathFiles = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
+    	
+    	String className;
+    	for (String classPathFile : classPathFiles) {
+    		try {
+    			File base = new File(classPathFile + File.separatorChar + path);
+    			for (File file: base.listFiles()) {
+    				className = file.getName();
+    				if(className.endsWith(".class")) {
+    					className = className.substring(0, className.length() - 6);
+    					classes.add(Class.forName(packageName + "." + className));
+    				}
+    			}
+    		}
+    		catch (Exception e) {
+    			//it'll work
+    		}
+    	}
+    	return classes;
     }
     
 }
