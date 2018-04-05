@@ -99,7 +99,7 @@ public class Main extends Application{
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        //creating show button, creates new view window
+        //creating show button that creates new window which displays critter world
       	Button showButton = new Button("Show");
       	showButton.setOnAction(new EventHandler<ActionEvent>() {
       		@Override
@@ -153,6 +153,7 @@ public class Main extends Application{
       		
       	//creating quit button
       	Button quitButton = new Button("Quit");
+      	quitButton.setOnAction(actionEvent -> Platform.exit());
       	
       	//creating a grid pane
       	GridPane controlGrid = new GridPane();
