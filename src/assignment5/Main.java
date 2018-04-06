@@ -138,6 +138,16 @@ public class Main extends Application{
         //creating show button that creates new window which displays critter world    
         Alert intAlert = new Alert(AlertType.ERROR, "You must enter an integer value.", ButtonType.OK);
         
+      	Stage statsStage = new Stage();
+		statsStage.setX(primaryStage.getX() - 200);
+		statsStage.setY(primaryStage.getX() - 200);
+		
+      	ChoiceBox<String> statsChoiceBox = new ChoiceBox<String>();
+      	for (int k = 0; k < critterChoices.size(); k += 1) {
+      		statsChoiceBox.getItems().add(critterChoices.get(k));
+      	}
+      	statsChoiceBox.getSelectionModel().selectFirst();
+        
         Button showButton = new Button("Show");
       	showButton.setOnAction(new EventHandler<ActionEvent>() {
       		
@@ -207,6 +217,7 @@ public class Main extends Application{
       					Critter.worldTimeStep();
       					CritterWorld.displayWorld();
       				}
+      				updateStats(statsChoiceBox.getValue().toString(), statsStage);
       			}
       			catch (NumberFormatException e) {
       				intAlert.showAndWait();
@@ -237,6 +248,8 @@ public class Main extends Application{
       				for (int i = 0; i < makeNum; i += 1) {
       					Critter.makeCritter(makeChoiceBox.getValue().toString());
       				}
+      				CritterWorld.displayWorld();
+      				updateStats(statsChoiceBox.getValue().toString(), statsStage);
       			}
       			catch (NumberFormatException | InvalidCritterException e) {
       				intAlert.showAndWait();
@@ -250,33 +263,13 @@ public class Main extends Application{
       			
       	//creating runStats button and drop-down menu for critter selection
       	Button statsButton = new Button("Run Statistics");
-      	ChoiceBox<String> statsChoiceBox = new ChoiceBox<String>();
-      	for (int k = 0; k < critterChoices.size(); k += 1) {
-      		statsChoiceBox.getItems().add(critterChoices.get(k));
-      	}
-      	statsChoiceBox.getSelectionModel().selectFirst();
-      	
-      	Stage statsStage = new Stage();
-		statsStage.setTitle("Statistics of " + statsChoiceBox.getValue().toString());
 		//GridPane statsGrid = new GridPane();
-		statsStage.setX(primaryStage.getX() - 200);
-		statsStage.setY(primaryStage.getX() - 200);
       	
       	statsButton.setOnAction(new EventHandler<ActionEvent>() {
       		//boolean statsFlag = false;
       		@Override
       		public void handle(ActionEvent event) {
-      			try {
-          			Class<?> c = Class.forName("assignment5." + statsChoiceBox.getValue().toString());
-          			List<Critter> critList = Critter.getInstances(statsChoiceBox.getValue().toString());
-          			Method method = c.getMethod("runStats", List.class);
-          			Object retobj = method.invoke(null, critList);
-         			String statistics = (String)retobj;
-      				updateStats(statsChoiceBox.getValue().toString(), statistics, statsStage);
-      			}
-      			catch (Exception e) {
-      				System.out.println("You messed up trying to run the statistics.");
-      			}
+      			updateStats(statsChoiceBox.getValue().toString(), statsStage);
       		}
       	});
       	    		
@@ -364,15 +357,27 @@ public class Main extends Application{
     	return classes;
     }
     
-    public static void updateStats(String critStatsUpdate, String stats, Stage s) {	
-    	s.setTitle("Statistics of " + critStatsUpdate);
-    	Text statsText = new Text();
-    	statsText.setText(stats);
-    	statsText.setX(50);
-    	statsText.setY(50);
-    	Group root = new Group(statsText);
-    	Scene statsScene = new Scene(root, 500, 150);
-    	s.setScene(statsScene);
-    	s.show();
+    public static void updateStats(String critType, Stage stage) {	
+    	
+    	try {
+  			Class<?> c = Class.forName("assignment5." + critType);
+  			List<Critter> critList = Critter.getInstances(critType);
+  			Method method = c.getMethod("runStats", List.class);
+  			Object retobj = method.invoke(null, critList);
+ 			String statistics = (String)retobj;
+ 			
+ 	    	stage.setTitle("Statistics of " + critType);
+ 	    	Text statsText = new Text();
+ 	    	statsText.setText(statistics);
+ 	    	statsText.setX(50);
+ 	    	statsText.setY(50);
+ 	    	Group root = new Group(statsText);
+ 	    	Scene statsScene = new Scene(root, 500, 150);
+ 	    	stage.setScene(statsScene);
+ 	    	stage.show();
+		}
+		catch (Exception e) {
+			System.out.println("You messed up trying to run/update the statistics.");
+		}
     }
 }
