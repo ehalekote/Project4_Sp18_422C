@@ -13,10 +13,12 @@ package assignment5;
  */
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.ResourceBundle.Control;
 import java.util.Scanner;
 import java.io.*;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
+import java.lang.Class;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,6 +27,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.scene.text.Text;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -112,7 +116,26 @@ public class Main extends Application{
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
-        //creating show button that creates new window which displays critter world
+        //creates an array list of strings which represent the critter types
+        //this is used later to populate the drop-down menus
+        List<Class<?>> classList = getClassesInPackage("assignment5");
+        Class baseClass = Critter.class;
+        boolean isCritter;
+        ArrayList<String> critterChoices = new ArrayList<String>();
+        for (int j = 0; j < classList.size(); j += 1) {
+        	isCritter = baseClass.isAssignableFrom(classList.get(j));
+        	//System.out.println(classList.get(j).toString() + " is a Critter: " + isCritter);
+        	if (isCritter) {
+        		String[] critterName = classList.get(j).toString().split("\\.");
+        		if (critterName[1].equals("Critter") || critterName[1].equals("Critter$TestCritter")) {
+        			continue;
+        		}
+        		//System.out.println(critterName[1]);
+        		critterChoices.add(critterName[1]);
+        	}
+        }
+        
+        //creating show button that creates new window which displays critter world    
         Alert intAlert = new Alert(AlertType.ERROR, "You must enter an integer value.", ButtonType.OK);
         
         Button showButton = new Button("Show");
@@ -124,7 +147,7 @@ public class Main extends Application{
       		public void handle(ActionEvent event) {
       	             	        
       			if(showFlag) {
-      				 Stage viewStage = new Stage();
+      				Stage viewStage = new Stage();
            	        viewStage.setTitle("Critter World");
            	        viewStage.setScene(new Scene(grid, 400, 400));
            	        viewStage.setX(primaryStage.getX() + 200);
@@ -142,6 +165,8 @@ public class Main extends Application{
       	//creating seed button and text field for # entry
       	Button seedButton = new Button("Seed");
       	TextField seedNumber = new TextField();
+      	
+      	//implementing seed button behavior
       	seedButton.setOnAction(new EventHandler<ActionEvent>() {
       		@Override
       		public void handle(ActionEvent event) {
@@ -149,6 +174,11 @@ public class Main extends Application{
       			try {
       				long seed = Long.parseLong(possibleSeed);
       				Critter.setSeed(seed);
+      				Alert seedAlert = new Alert(AlertType.CONFIRMATION, "You have set the seed at " + seed + ".", ButtonType.OK);
+      				seedAlert.showAndWait();
+      				if (seedAlert.getResult() == ButtonType.OK) {
+      					seedAlert.close();
+      				}
       			}
       			catch (NumberFormatException e) {
       				intAlert.showAndWait();
@@ -160,12 +190,11 @@ public class Main extends Application{
       		}
       	});
       		
-      	//creating step button and drop-down menu for # of steps
+      	//creating step button and text-field to enter desired number of steps
       	Button stepButton = new Button("Step");
       	TextField stepNumber = new TextField();
-      	//ChoiceBox stepChoiceBox = new ChoiceBox();
-      	//stepChoiceBox.getItems().addAll("1", "5", "10", "25", "100", "500", "1000");
-      	//stepChoiceBox.getSelectionModel().selectFirst();
+
+      	//implementing step button behavior
       	stepButton.setOnAction(new EventHandler<ActionEvent>() {
       		public void handle(ActionEvent event) {
       			String possibleStep = stepNumber.getText();
@@ -190,14 +219,63 @@ public class Main extends Application{
       	//creating make button, drop-down menu for critter selection, and text field for # entry
       	Button makeButton = new Button("Make");
       	ChoiceBox makeChoiceBox = new ChoiceBox(); //write code to retrieve list of critters
-      	makeChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
+      	for (int k = 0; k < critterChoices.size(); k += 1) {
+      		makeChoiceBox.getItems().add(critterChoices.get(k));
+      	}
+      	makeChoiceBox.getSelectionModel().selectFirst();
       	TextField makeNumber = new TextField();
-      		
+      	
+      	//implementing make button behavior
+      	makeButton.setOnAction(new EventHandler<ActionEvent>() {
+      		public void handle(ActionEvent event) {
+      			String possibleMakeNumber = makeNumber.getText();
+      			try {
+      				int makeNum = Integer.parseInt(possibleMakeNumber);
+      				for (int i = 0; i < makeNum; i += 1) {
+      					Critter.makeCritter(makeChoiceBox.getValue().toString());
+      				}
+      			}
+      			catch (NumberFormatException | InvalidCritterException e) {
+      				intAlert.showAndWait();
+      				
+      				if (intAlert.getResult() == ButtonType.OK) {
+      					intAlert.close();
+      				}
+      			}
+      		}
+      	});
+      			
       	//creating runStats button and drop-down menu for critter selection
       	Button statsButton = new Button("Run Statistics");
       	ChoiceBox statsChoiceBox = new ChoiceBox();
-      	statsChoiceBox.getItems().addAll("Test1", "Test2", "Test3");
-      		
+      	for (int k = 0; k < critterChoices.size(); k += 1) {
+      		statsChoiceBox.getItems().add(critterChoices.get(k));
+      	}
+      	statsChoiceBox.getSelectionModel().selectFirst();
+      	
+      	Stage statsStage = new Stage();
+		statsStage.setTitle("Statistics of " + statsChoiceBox.getValue().toString());
+		GridPane statsGrid = new GridPane();
+		statsStage.setX(primaryStage.getX() - 200);
+		statsStage.setY(primaryStage.getX() - 200);
+      	
+      	statsButton.setOnAction(new EventHandler<ActionEvent>() {
+      		boolean statsFlag = false;
+      		public void handle(ActionEvent event) {
+      			try {
+          			Class c = Class.forName("assignment5." + statsChoiceBox.getValue().toString());
+          			List<Critter> critList = Critter.getInstances(statsChoiceBox.getValue().toString());
+          			Method method = c.getMethod("runStats", List.class);
+          			Object retobj = method.invoke(null, critList);
+         			String statistics = (String)retobj;
+      				updateStats(statsChoiceBox.getValue().toString(), statistics, statsStage);
+      			}
+      			catch (Exception e) {
+      				System.out.println("You messed up trying to run the statistics.");
+      			}
+      		}
+      	});
+      	    		
       	//creating quit button
       	Button quitButton = new Button("Quit");
       	quitButton.setOnAction(actionEvent -> Platform.exit());
@@ -247,10 +325,50 @@ public class Main extends Application{
      		}
     }
     		
-    
     public static void main(String[] args) {
     		arg2 = args;
     		launch(args);
     }
     
+    /**
+     * Returns a list of classes in the specified package. 
+     * This method is used to populate the drop-down menus.
+     * @param packageName package which contains the classes you want to observe
+     * @return list of classes inside the given package
+     */
+    public static final List<Class<?>> getClassesInPackage(String packageName) {
+    	String path = packageName.replaceAll("\\.", File.separator);
+    	List<Class<?>> classes = new ArrayList<>();
+    	String [] classPathFiles = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
+    	
+    	String className;
+    	for (String classPathFile : classPathFiles) {
+    		try {
+    			File base = new File(classPathFile + File.separatorChar + path);
+    			for (File file: base.listFiles()) {
+    				className = file.getName();
+    				if(className.endsWith(".class")) {
+    					className = className.substring(0, className.length() - 6);
+    					classes.add(Class.forName(packageName + "." + className));
+    				}
+    			}
+    		}
+    		catch (Exception e) {
+    			System.out.println("There was an error trying to retrive a list of critter types.");
+    		}
+    	}
+    	return classes;
+    }
+    
+    public static void updateStats(String critStatsUpdate, String stats, Stage s) {	
+    	s.setTitle("Statistics of " + critStatsUpdate);
+    	Text statsText = new Text();
+    	statsText.setText(stats);
+    	statsText.setX(50);
+    	statsText.setY(50);
+    	Group root = new Group(statsText);
+    	Scene statsScene = new Scene(root, 500, 150);
+    	s.setScene(statsScene);
+    	s.show();
+    }
 }
