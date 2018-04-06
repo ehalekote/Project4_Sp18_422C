@@ -11,6 +11,8 @@ package assignment5;
  * Spring 2018
  */
 
+import assignment5.Critter.CritterShape;
+
 /**
  * This Critter walks in circles and always fights
  * @author ehalekote
@@ -90,7 +92,9 @@ public class CritterB extends Critter{
 	 * CritterB is !
 	 */
 	@Override
-	public String toString() { return "!"; }
+	public String toString() { 
+		return "!"; 
+		}
 	
 	/**
 	 * Checks number of counter-clockwise vs. clockwise walks
@@ -118,5 +122,11 @@ public class CritterB extends Critter{
 		
 		
 	}
+	
+	@Override
+	public CritterShape viewShape() { return CritterShape.STAR; }
+
+	@Override
+	public javafx.scene.paint.Color viewFillColor() { return javafx.scene.paint.Color.BLACK; }
 
 }

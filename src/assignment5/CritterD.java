@@ -11,6 +11,8 @@ package assignment5;
  * Spring 2018
  */
 
+import assignment5.Critter.CritterShape;
+
 /**
  * This Critter has a 1/3 chance of fighting other critters and only moves in an upward zig-zag patter
  * @author ehalekote
@@ -25,11 +27,13 @@ public class CritterD extends Critter{
 	 */
 	@Override
 	public void doTimeStep() {
-		if(direction == 0) {
+		if(direction == 0 && this.look(direction, false) != null) {
 			walk(1);
+			direction = 1;
 		}
 		else {
 			walk(3);
+			direction = 0;
 		}
 		
 	}
@@ -70,4 +74,9 @@ public class CritterD extends Critter{
 		
 	}
 
+	@Override
+	public CritterShape viewShape() { return CritterShape.TRIANGLE; }
+
+	@Override
+	public javafx.scene.paint.Color viewFillColor() { return javafx.scene.paint.Color.SALMON; }
 }

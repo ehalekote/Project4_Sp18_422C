@@ -11,6 +11,8 @@ package assignment5;
  * Spring 2018
  */
 
+import assignment5.Critter.CritterShape;
+
 /**
  * This Critter only fights critters of the same type and only walks left and right in the same two spots
  * @author ehalekote
@@ -75,5 +77,11 @@ public class CritterA extends Critter {
 		}
 		System.out.println("" + totalShuffles + " total shuffles   ");
 	}
+	
+	@Override
+	public CritterShape viewShape() { return CritterShape.DIAMOND; }
+
+	@Override
+	public javafx.scene.paint.Color viewFillColor() { return javafx.scene.paint.Color.PURPLE; }
 	
 }
