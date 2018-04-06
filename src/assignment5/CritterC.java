@@ -11,6 +11,8 @@ package assignment5;
  * Spring 2018
  */
 
+import assignment5.Critter.CritterShape;
+
 /**
  * This critter moves diagonally to the up and right and won't fight critters of the same type
  * @author ehalekote
@@ -48,7 +50,7 @@ public class CritterC extends Critter{
 	 */
 	@Override
 	public boolean fight(String oponent) {
-		if(oponent == "&") {
+		if(oponent == "&" && this.look(directionToMove, false) != null) {
 			return false;
 		}
 		return true;
@@ -64,19 +66,28 @@ public class CritterC extends Critter{
 	 * Checks for number of runs vs walks for CritterC
 	 * @param critterList
 	 */
-	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterCs   ");	
-		
-		int totalWalks = 0;
-		int totalRuns = 0;
-		for (Object obj : critterList) {
-			CritterC c = (CritterC) obj;
-			totalWalks = totalWalks + c.numWalks;
-			totalRuns = totalRuns + c.numRuns;
-		}
-		System.out.print("" + totalWalks + " total number of walks   ");
-		System.out.println("" + totalRuns + " total number of runs   ");		
-		
-	}
+//	public static void runStats(java.util.List<Critter> critterList) {
+//		System.out.print("" + critterList.size() + " total CritterCs   ");	
+//		
+//		int totalWalks = 0;
+//		int totalRuns = 0;
+//		for (Object obj : critterList) {
+//			CritterC c = (CritterC) obj;
+//			totalWalks = totalWalks + c.numWalks;
+//			totalRuns = totalRuns + c.numRuns;
+//		}
+//		System.out.print("" + totalWalks + " total number of walks   ");
+//		System.out.println("" + totalRuns + " total number of runs   ");		
+//		
+//	}
+	
+	@Override
+	public CritterShape viewShape() { return CritterShape.TRIANGLE; }
+
+	@Override
+	public javafx.scene.paint.Color viewFillColor() { return javafx.scene.paint.Color.YELLOW; }
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.BLACK; }
 
 }

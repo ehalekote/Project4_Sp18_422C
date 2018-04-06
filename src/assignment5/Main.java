@@ -77,7 +77,18 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) {
     		try {
-    		
+    			CritterWorld temp = new CritterWorld();	//Needed to instantiate WorldModel 
+    			Critter.makeCritter("CritterA");
+//    			Critter.makeCritter("CritterA");
+//    			Critter.makeCritter("CritterA");
+//    			Critter.makeCritter("CritterB");
+//    			Critter.makeCritter("CritterB");
+    			Critter.makeCritter("CritterB");
+    			Critter.makeCritter("CritterC");
+    			Critter.makeCritter("CritterD");
+    			Critter.makeCritter("Craig");
+    			
+
         if (arg2.length != 0) {
             try {
                 inputFile = arg2[0];
@@ -184,6 +195,7 @@ public class Main extends Application{
       	Button stepButton = new Button("Step");
       	TextField stepNumber = new TextField();
 
+
       	//implementing step button behavior
       	stepButton.setOnAction(new EventHandler<ActionEvent>() {
       		public void handle(ActionEvent event) {
@@ -192,7 +204,8 @@ public class Main extends Application{
       				int step = Integer.parseInt(possibleStep);
       				for (int i = 0; i < step; i +=1) {
       					System.out.println("step " + (i + 1));
-      					//Critter.worldTimeStep();
+      					Critter.worldTimeStep();
+      					CritterWorld.displayWorld();
       				}
       			}
       			catch (NumberFormatException e) {
@@ -307,6 +320,9 @@ public class Main extends Application{
       	primaryStage.setScene(controlScene);
       	primaryStage.show();
       	
+        //CritterWorld.displayWorld();
+        
+        //boolean exit = false; // quit command will set to true
 
     		}
      		catch(Exception e) {
