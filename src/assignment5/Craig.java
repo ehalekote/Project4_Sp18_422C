@@ -68,7 +68,12 @@ public class Craig extends Critter {
 		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ");
 		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
 		System.out.println();
-		return "craig ran stats";
+		String craigStats = craigs.size() + " total Craigs\r\n";
+		craigStats += total_straight / (GENE_TOTAL * 0.01 * craigs.size()) + "% straight\r\n";
+		craigStats += total_back / (GENE_TOTAL * 0.01 * craigs.size()) + "% back\r\n";
+		craigStats += total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right\r\n";
+		craigStats += total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left\r\n";
+		return craigStats;
 	}
 	
 	@Override
