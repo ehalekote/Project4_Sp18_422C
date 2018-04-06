@@ -121,9 +121,9 @@ public class TragicCritter extends Critter {
 ////			return "Collided, sadly";
 ////		}
 ////	}
-//////	@Override
-//////	public CritterShape viewShape() { return CritterShape.STAR; }
-////
-//////	@Override
-//////	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.CRIMSON; }
-////}
+	@Override
+	public CritterShape viewShape() { return CritterShape.STAR; }
+
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.CRIMSON; }
+}
