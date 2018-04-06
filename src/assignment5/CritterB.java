@@ -131,5 +131,8 @@ public class CritterB extends Critter{
 
 	@Override
 	public javafx.scene.paint.Color viewFillColor() { return javafx.scene.paint.Color.BLACK; }
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { return javafx.scene.paint.Color.BLACK; }
 
 }

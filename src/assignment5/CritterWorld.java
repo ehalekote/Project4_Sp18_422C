@@ -163,7 +163,7 @@ public class CritterWorld {
 
 		}
 		else if(c.viewShape()==CritterShape.STAR) {
-			s = new Polygon( 0.0, 0.0, 4.0, 0.0, 8.0, -5.0, 12.0, 0.0, 16.0, 0.0, 10.0, 3.0);	//FIX top cone
+			s = new Polygon( 0.0, 0.0, 6.0, 0.0, 8.0, -5.0, 10.0, 0.0, 16.0, 0.0, 10.0, 3.0, 13.0, 9.0, 8.0, 5.0, 3.0, 9.0, 6.0, 3.0);	//FIX top cone
 		}
 		else {
 			System.out.println("CritterShape Not Found");
