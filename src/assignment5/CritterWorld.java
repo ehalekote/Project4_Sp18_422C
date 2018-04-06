@@ -90,6 +90,7 @@ public class CritterWorld {
 			rebaseFlag = false;
 		}
 	
+
 	private static void resetBoard() {
 		Main.grid.getChildren().clear();
 		for (int row = 0; row < Params.world_width; row++) {
@@ -103,6 +104,7 @@ public class CritterWorld {
 		
 		Main.grid.setGridLinesVisible(true);
 	}
+
 
 	/**
 	 * Prints the world to the console

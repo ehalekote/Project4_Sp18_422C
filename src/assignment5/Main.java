@@ -88,6 +88,7 @@ public class Main extends Application{
     			Critter.makeCritter("CritterD");
     			Critter.makeCritter("Craig");
     			
+
         if (arg2.length != 0) {
             try {
                 inputFile = arg2[0];
@@ -193,6 +194,7 @@ public class Main extends Application{
       	//creating step button and text-field to enter desired number of steps
       	Button stepButton = new Button("Step");
       	TextField stepNumber = new TextField();
+
 
       	//implementing step button behavior
       	stepButton.setOnAction(new EventHandler<ActionEvent>() {
