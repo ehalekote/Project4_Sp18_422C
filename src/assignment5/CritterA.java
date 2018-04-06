@@ -67,16 +67,16 @@ public class CritterA extends Critter {
 	 * Checks for number of total shuffles
 	 * @param critterList
 	 */
-	public static void runStats(java.util.List<Critter> critterList) {
-		System.out.print("" + critterList.size() + " total CritterAs   ");	
-		
-		int totalShuffles = 0;
-		for (Object obj : critterList) {
-			CritterA c = (CritterA) obj;
-			totalShuffles = totalShuffles + c.numShuffles;
-		}
-		System.out.println("" + totalShuffles + " total shuffles   ");
-	}
+//	public static void runStats(java.util.List<Critter> critterList) {
+//		System.out.print("" + critterList.size() + " total CritterAs   ");	
+//		
+//		int totalShuffles = 0;
+//		for (Object obj : critterList) {
+//			CritterA c = (CritterA) obj;
+//			totalShuffles = totalShuffles + c.numShuffles;
+//		}
+//		System.out.println("" + totalShuffles + " total shuffles   ");
+//	}
 	
 	@Override
 	public CritterShape viewShape() { return CritterShape.DIAMOND; }
