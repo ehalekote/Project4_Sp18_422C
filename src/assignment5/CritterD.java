@@ -62,17 +62,19 @@ public class CritterD extends Critter{
 	 * Checks for number of initiated fights
 	 * @param critterList
 	 */
-//	public static void runStats(java.util.List<Critter> critterList) {
-//		System.out.print("" + critterList.size() + " total CritterDs   ");	
-//		
-//		int totalFights = 0;
-//		for (Object obj : critterList) {
-//			CritterD c = (CritterD) obj;
-//			totalFights = totalFights + c.numInitiatedFights;
-//		}
-//		System.out.println("" + totalFights + " total number of fights initiated   ");	
-//		
-//	}
+	public static String runStats(java.util.List<Critter> critterList) {
+		//System.out.print("" + critterList.size() + " total CritterDs   ");	
+		String dStats = "" + critterList.size() + " total CritterDs\r\n";
+		
+		int totalFights = 0;
+		for (Object obj : critterList) {
+			CritterD c = (CritterD) obj;
+			totalFights = totalFights + c.numInitiatedFights;
+		}
+		//System.out.println("" + totalFights + " total number of fights initiated   ");	
+		dStats += "" + totalFights + " total number of fights initiated";
+		return dStats;
+	}
 
 	@Override
 	public CritterShape viewShape() { return CritterShape.TRIANGLE; }

@@ -386,7 +386,7 @@ public abstract class Critter {
 	 * @param critters List of Critters.
 	 */
 	public static String runStats(List<Critter> critters) {
-		System.out.print("" + critters.size() + " critters as follows -- ");
+		//System.out.print("" + critters.size() + " critters as follows -- ");
 		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
 		for (Critter crit : critters) {
 			String crit_string = crit.toString();
@@ -400,11 +400,11 @@ public abstract class Critter {
 		String prefix = "";
 		String critCount = critters.size() + " critters as follows -- ";
 		for (String s : critter_count.keySet()) {
-			System.out.print(prefix + s + ":" + critter_count.get(s));
+			//System.out.print(prefix + s + ":" + critter_count.get(s));
 			critCount += prefix + s + ":" + critter_count.get(s);
 			prefix = ", ";
 		}
-		System.out.println();
+		//System.out.println();
 		return critCount;
 	}
 	
