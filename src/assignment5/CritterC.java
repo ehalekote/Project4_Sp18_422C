@@ -66,20 +66,23 @@ public class CritterC extends Critter{
 	 * Checks for number of runs vs walks for CritterC
 	 * @param critterList
 	 */
-//	public static void runStats(java.util.List<Critter> critterList) {
-//		System.out.print("" + critterList.size() + " total CritterCs   ");	
-//		
-//		int totalWalks = 0;
-//		int totalRuns = 0;
-//		for (Object obj : critterList) {
-//			CritterC c = (CritterC) obj;
-//			totalWalks = totalWalks + c.numWalks;
-//			totalRuns = totalRuns + c.numRuns;
-//		}
-//		System.out.print("" + totalWalks + " total number of walks   ");
-//		System.out.println("" + totalRuns + " total number of runs   ");		
-//		
-//	}
+	public static String runStats(java.util.List<Critter> critterList) {
+		//System.out.print("" + critterList.size() + " total CritterCs   ");
+		String cStats = "" + critterList.size() + " total CritterCs\r\n";
+		
+		int totalWalks = 0;
+		int totalRuns = 0;
+		for (Object obj : critterList) {
+			CritterC c = (CritterC) obj;
+			totalWalks = totalWalks + c.numWalks;
+			totalRuns = totalRuns + c.numRuns;
+		}
+		//System.out.print("" + totalWalks + " total number of walks   ");
+		//System.out.println("" + totalRuns + " total number of runs   ");		
+		cStats += "" + totalWalks + " total number of walks\r\n";
+		cStats += "" + totalRuns + " total number of runs";
+		return cStats;
+	}
 	
 	@Override
 	public CritterShape viewShape() { return CritterShape.TRIANGLE; }

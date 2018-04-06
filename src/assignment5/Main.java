@@ -321,7 +321,6 @@ public class Main extends Application{
       	primaryStage.setTitle("Controller");
       	primaryStage.setScene(controlScene);
       	primaryStage.show();
-
       	
         //CritterWorld.displayWorld();
     		}
