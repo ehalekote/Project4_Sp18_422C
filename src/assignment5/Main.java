@@ -104,6 +104,8 @@ public class Main extends Application{
         /* Do not alter the code above for your submission. */
         /* Write your code below. */
         
+        //creates an array list of strings which represent the critter types
+        //this is used later to populate the drop-down menus
         List<Class<?>> classList = getClassesInPackage("assignment5");
         Class baseClass = Critter.class;
         boolean isCritter;
@@ -166,7 +168,7 @@ public class Main extends Application{
       		}
       	});
       		
-      	//creating step button and drop-down menu for # of steps
+      	//creating step button and text-field to enter desired number of steps
       	Button stepButton = new Button("Step");
       	TextField stepNumber = new TextField();
       	//ChoiceBox stepChoiceBox = new ChoiceBox();
@@ -198,14 +200,35 @@ public class Main extends Application{
       	for (int k = 0; k < critterChoices.size(); k += 1) {
       		makeChoiceBox.getItems().add(critterChoices.get(k));
       	}
+      	makeChoiceBox.getSelectionModel().selectFirst();
       	TextField makeNumber = new TextField();
-      		
+      	
+      	makeButton.setOnAction(new EventHandler<ActionEvent>() {
+      		public void handle(ActionEvent event) {
+      			String possibleMakeNumber = makeNumber.getText();
+      			try {
+      				int makeNum = Integer.parseInt(possibleMakeNumber);
+      				for (int i = 0; i < makeNum; i += 1) {
+      					Critter.makeCritter(makeChoiceBox.getValue().toString());
+      				}
+      			}
+      			catch (NumberFormatException | InvalidCritterException e) {
+      				intAlert.showAndWait();
+      				
+      				if (intAlert.getResult() == ButtonType.OK) {
+      					intAlert.close();
+      				}
+      			}
+      		}
+      	});
+      			
       	//creating runStats button and drop-down menu for critter selection
       	Button statsButton = new Button("Run Statistics");
       	ChoiceBox statsChoiceBox = new ChoiceBox();
       	for (int k = 0; k < critterChoices.size(); k += 1) {
       		statsChoiceBox.getItems().add(critterChoices.get(k));
       	}
+      	statsChoiceBox.getSelectionModel().selectFirst();
       		
       	//creating quit button
       	Button quitButton = new Button("Quit");
@@ -262,6 +285,12 @@ public class Main extends Application{
     		launch(args);
     }
     
+    /**
+     * Returns a list of classes in the specified package. 
+     * This method is used to populate the drop-down menus.
+     * @param packageName package which contains the classes you want to observe
+     * @return list of classes inside the given package
+     */
     public static final List<Class<?>> getClassesInPackage(String packageName) {
     	String path = packageName.replaceAll("\\.", File.separator);
     	List<Class<?>> classes = new ArrayList<>();
