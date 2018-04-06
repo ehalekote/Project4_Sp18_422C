@@ -318,6 +318,9 @@ public class Main extends Application{
       	primaryStage.setScene(controlScene);
       	primaryStage.show();
       	
+        //CritterWorld.displayWorld();
+        
+        //boolean exit = false; // quit command will set to true
 
     		}
      		catch(Exception e) {

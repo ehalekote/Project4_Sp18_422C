@@ -90,6 +90,20 @@ public class CritterWorld {
 			rebaseFlag = false;
 		}
 	
+	private static void resetBoard() {
+		Main.grid.getChildren().clear();
+		for (int row = 0; row < Params.world_width; row++) {
+            for (int col = 0; col < Params.world_height; col ++) {
+                StackPane square = new StackPane();
+                //square.setStyle("-fx-border-color: black");
+                Main.grid.add(square, col, row);
+                
+            }
+        }
+		
+		Main.grid.setGridLinesVisible(true);
+	}
+
 	/**
 	 * Prints the world to the console
 	 */
@@ -99,6 +113,7 @@ public class CritterWorld {
 		 //Clear critters grid
 		rebaseWorld();
 		paintWorld();
+		//resetBoard();
 		
 		//Upper Border
 		System.out.print("+"); 
