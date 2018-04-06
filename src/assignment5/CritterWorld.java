@@ -13,6 +13,7 @@ package assignment5;
 import java.util.List;
 import java.util.ResourceBundle.Control;
 
+import assignment5.Critter.CritterShape;
 import assignment5.Critter.TestCritter;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import javafx.scene.shape.Polygon;
 public class CritterWorld {
 	
 	static ArrayList<ArrayList<LinkedList<Critter>>> worldModel = new ArrayList<ArrayList<LinkedList<Critter>>>();		//Represents the game board, indexed as X, Y, list of critters in the spot
-	//static String[][] copyWorld = new String[Params.world_width][Params.world_height];
 	static ArrayList<ArrayList<LinkedList<Critter>>> copyWorld = new ArrayList<ArrayList<LinkedList<Critter>>>();
 	
 	
@@ -90,13 +90,32 @@ public class CritterWorld {
 			rebaseFlag = false;
 		}
 	
+
+	private static void resetBoard() {
+		Main.grid.getChildren().clear();
+		for (int row = 0; row < Params.world_width; row++) {
+            for (int col = 0; col < Params.world_height; col ++) {
+                StackPane square = new StackPane();
+                //square.setStyle("-fx-border-color: black");
+                Main.grid.add(square, col, row);
+                
+            }
+        }
+		
+		Main.grid.setGridLinesVisible(true);
+	}
+
+
 	/**
 	 * Prints the world to the console
 	 */
 	public static void displayWorld() {
+		
+		
 		 //Clear critters grid
 		rebaseWorld();
 		paintWorld();
+		//resetBoard();
 		
 		//Upper Border
 		System.out.print("+"); 
@@ -126,31 +145,52 @@ public class CritterWorld {
 		System.out.println("+"); 
 	}
 	
-	static Shape getIcon(int shapeIndex) {
-		Shape s = null;
+	static Shape getIcon(Critter c) {
 		int size = 10;
+		Shape s = null;
 		
-		shapeIndex = Critter.getRandomInt(2);
-		
-		switch(shapeIndex) {
-		case 0: s = new Rectangle(size, size); 
-			s.setFill(javafx.scene.paint.Color.RED); break;
-		case 1: s = new Circle(size/2); 
-			s.setFill(javafx.scene.paint.Color.GREEN); break;
+		if(c.viewShape()==CritterShape.CIRCLE) {
+			s = new Circle(size/2);
 		}
-		// set the outline of the shape
-		s.setStroke(javafx.scene.paint.Color.BLUE); // outline
+		else if(c.viewShape()==CritterShape.SQUARE) {
+			s = new Rectangle();
+		}
+		else if(c.viewShape()==CritterShape.TRIANGLE) {	
+			s = new Polygon( 0.0, 0.0, 7.0, -9.0, 14.0, 0.0);
+		}
+		else if(c.viewShape()==CritterShape.DIAMOND) {
+			s = new Polygon( 0.0, 0.0, 6.0, 7.0, 12.0, 0.0, 6.0, -7.0);	//FIX
+
+		}
+		else if(c.viewShape()==CritterShape.STAR) {
+			s = new Polygon( 0.0, 0.0, 4.0, 0.0, 8.0, -5.0, 12.0, 0.0, 16.0, 0.0, 10.0, 3.0);	//FIX top cone
+		}
+		else {
+			System.out.println("CritterShape Not Found");
+		}
+		
+		
+		s.setFill(c.viewFillColor());
+		s.setStroke(c.viewOutlineColor());
+		
 		return s;
+		
+
 	}
 	
 	public static void paintWorld() {		//UPDATE TO CYCLE THROUGH ALL CRITTERS IN GRID
-		for (int i = 0; i <= 1; i++) {
-			Shape s = getIcon(i);	// convert the index to an icon.
-			Main.grid.add(s, i, i); // add the shape to the grid.
+
+		for(int y=0;y<Params.world_height;y++) {
+			for(int x=0;x<Params.world_width;x++) {
+				if(!worldModel.get(x).get(y).isEmpty() && worldModel.get(x).get(y).size() >=1) {
+					Critter board = worldModel.get(x).get(y).getFirst();
+					Shape s = getIcon(board); //Fails after one go
+					Main.grid.add(s, x, y);
+				}
+			}
 		}
-		//Iterate through all critters in worldModel
-		//get their corresponding Shape value
-		//Add the shape to the grid
+
+		
 		
 		
 	}
