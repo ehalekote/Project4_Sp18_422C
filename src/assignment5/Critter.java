@@ -361,12 +361,14 @@ public abstract class Critter {
 			}
 		}
 		String prefix = "";
+		String critCount = critters.size() + " critters as follows -- ";
 		for (String s : critter_count.keySet()) {
 			System.out.print(prefix + s + ":" + critter_count.get(s));
+			critCount += prefix + s + ":" + critter_count.get(s);
 			prefix = ", ";
 		}
 		System.out.println();
-		return "super critter";
+		return critCount;
 	}
 	
 	/* the TestCritter class allows some critters to "cheat". If you want to 

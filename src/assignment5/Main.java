@@ -57,7 +57,6 @@ public class Main extends Application{
     private static boolean DEBUG = false; // Use it or not, as you wish!
     static PrintStream old = System.out;	// if you want to restore output to console
 
-
     // Gets the package name.  The usage assumes that Critter and its subclasses are all in the same package.
     static {
         myPackage = Critter.class.getPackage().toString().split(" ")[1];
@@ -109,7 +108,7 @@ public class Main extends Application{
         //creates an array list of strings which represent the critter types
         //this is used later to populate the drop-down menus
         List<Class<?>> classList = getClassesInPackage("assignment5");
-        Class baseClass = Critter.class;
+        Class<?> baseClass = Critter.class;
         boolean isCritter;
         ArrayList<String> critterChoices = new ArrayList<String>();
         for (int j = 0; j < classList.size(); j += 1) {
@@ -186,6 +185,7 @@ public class Main extends Application{
 
       	//implementing step button behavior
       	stepButton.setOnAction(new EventHandler<ActionEvent>() {
+      		@Override
       		public void handle(ActionEvent event) {
       			String possibleStep = stepNumber.getText();
       			try {
@@ -207,7 +207,7 @@ public class Main extends Application{
       		
       	//creating make button, drop-down menu for critter selection, and text field for # entry
       	Button makeButton = new Button("Make");
-      	ChoiceBox makeChoiceBox = new ChoiceBox(); //write code to retrieve list of critters
+      	ChoiceBox<String> makeChoiceBox = new ChoiceBox<String>();
       	for (int k = 0; k < critterChoices.size(); k += 1) {
       		makeChoiceBox.getItems().add(critterChoices.get(k));
       	}
@@ -216,10 +216,11 @@ public class Main extends Application{
       	
       	//implementing make button behavior
       	makeButton.setOnAction(new EventHandler<ActionEvent>() {
+      		@Override
       		public void handle(ActionEvent event) {
-      			String possibleMakeNumber = makeNumber.getText();
+      			String possibleMakeNum = makeNumber.getText();
       			try {
-      				int makeNum = Integer.parseInt(possibleMakeNumber);
+      				int makeNum = Integer.parseInt(possibleMakeNum);
       				for (int i = 0; i < makeNum; i += 1) {
       					Critter.makeCritter(makeChoiceBox.getValue().toString());
       				}
@@ -236,7 +237,7 @@ public class Main extends Application{
       			
       	//creating runStats button and drop-down menu for critter selection
       	Button statsButton = new Button("Run Statistics");
-      	ChoiceBox statsChoiceBox = new ChoiceBox();
+      	ChoiceBox<String> statsChoiceBox = new ChoiceBox<String>();
       	for (int k = 0; k < critterChoices.size(); k += 1) {
       		statsChoiceBox.getItems().add(critterChoices.get(k));
       	}
@@ -244,15 +245,16 @@ public class Main extends Application{
       	
       	Stage statsStage = new Stage();
 		statsStage.setTitle("Statistics of " + statsChoiceBox.getValue().toString());
-		GridPane statsGrid = new GridPane();
+		//GridPane statsGrid = new GridPane();
 		statsStage.setX(primaryStage.getX() - 200);
 		statsStage.setY(primaryStage.getX() - 200);
       	
       	statsButton.setOnAction(new EventHandler<ActionEvent>() {
-      		boolean statsFlag = false;
+      		//boolean statsFlag = false;
+      		@Override
       		public void handle(ActionEvent event) {
       			try {
-          			Class c = Class.forName("assignment5." + statsChoiceBox.getValue().toString());
+          			Class<?> c = Class.forName("assignment5." + statsChoiceBox.getValue().toString());
           			List<Critter> critList = Critter.getInstances(statsChoiceBox.getValue().toString());
           			Method method = c.getMethod("runStats", List.class);
           			Object retobj = method.invoke(null, critList);
@@ -306,12 +308,11 @@ public class Main extends Application{
       	primaryStage.setTitle("Controller");
       	primaryStage.setScene(controlScene);
       	primaryStage.show();
-      	
-
-    		}
-     		catch(Exception e) {
-     			e.printStackTrace();		
-     		}
+    	}
+     	
+    	catch(Exception e) {
+     		e.printStackTrace();		
+     	}
     }
     		
     public static void main(String[] args) {
